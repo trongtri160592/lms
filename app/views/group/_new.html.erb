@@ -1,0 +1,38 @@
+<div class="modal-dialog" role="document">
+  <div class="modal-content" style="padding-top:20px">
+    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+    </button>
+    <h4 style="font-size:14px;text-align:center" id="titleUtypes">THÊM KIỂU NGƯỜI DÙNG</h4>
+    <div class="separator"></div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="lms-input-group">
+          <div class="input-group-title right">Kiểu người dùng</div>
+          <div class="input-group-content">
+                <input id="user-group-name" class="form-control" maxlength="255" name="user-group-name" style="border: 1px solid rgb(204, 204, 204);" type="text">
+          </div>
+          <span id="errorNameCourse" class="error-message firstname-error pull-right" style="display: none;"></span>
+        </div>
+      </div>
+    </div>
+    <div class="row" style="border:dotted 1px #808080;margin:15px;margin-left:50px;margin-right:50px"></div>
+    <div class="row">
+      <form id="role-form">
+      <% if roles %>
+          <% roles.each do |role| %>
+              <div class="checkbox">
+                <label><input type="checkbox" name="role[]" value="<%= role.id %>"><%= role.role %> </label>
+              </div>
+          <% end %>
+      <% end %>
+      </form>
+
+      <div class="col-md-12">
+        <div class="button-action-group">
+          <button id="btn-save-group" class="btn btn-save btn-fixed-width xm-btn-full-width" value="Lưu">Lưu</button>
+          <button class="btn btn-cancel btn-fixed-width xm-btn-full-width" data-dismiss="modal" value="Hủy">Huỷ</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

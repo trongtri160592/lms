@@ -1,0 +1,49 @@
+<h2>Quan ly nguoi dung</h2>
+
+<div class="user-control-nav">
+  <form enctype="multipart/form-data">
+    <input name="file" type="file"/>
+    <input type="button" value="Upload" id="btn-excel-submit"/>
+  </form>
+</div>
+
+<div>
+  <table class="table table-hover">
+    <thead>
+    <tr>
+      <th class="text-center btn-group-1"><input id="check-all-delete-js" type="checkbox"></th>
+      <th class="text-left">Tên người dùng</th>
+      <th class="text-left mobile-hide">Tên đăng nhập</th>
+      <th class="text-left mobile-hide">Kiểu người dùng</th>
+      <th class="date mobile-hide">Ngày tham gia</th>
+      <th class="btn-group-3">Chức năng</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @users.each do |user| %>
+        <tr data-id="4372" style="display: table-row;" class="paginationItemPage1">
+          <td class="text-center btn-group-1">
+            <input class="one-delete-js" type="checkbox">
+          </td>
+          <td class="key">
+            <a data-type="fullname" href="/nguoi-dung/sua/<%= user.id %>"><%= user.username %></a>
+          </td>
+          <td class="key mobile-hide"><%= user.username %></td>
+          <td class="key mobile-hide">Người học</td>
+          <td class="text-center key mobile-hide"><%= user.created_at.strftime("%d/%m/%Y ") %></td>
+          <td class="text-center">
+            <a class="btn btn-action" href="/userreport/details/4372" title="Báo cáo">
+              <span class="fa fa-area-chart"></span>
+            </a>
+            <a class="btn btn-action" href="/users/edit/4372" title="Sửa">
+              <span class="fa fa-pencil"></span>
+            </a>
+            <button class="btn btn-action" title="Xoá">
+              <span class="fa fa-trash"></span>
+            </button>
+          </td>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>

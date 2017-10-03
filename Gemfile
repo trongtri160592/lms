@@ -41,6 +41,19 @@ group :development, :test do
   gem 'selenium-webdriver'
 end
 
+# Use bootstrap for twitter style
+gem 'bootstrap-sass'
+
+# Use Jquery as javascript library
+gem 'jquery-rails'
+gem 'carrierwave'
+
+# Use for authentication
+gem 'devise'
+
+# Use to read excel file
+gem 'roo'
+
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem 'web-console', '>= 3.3.0'

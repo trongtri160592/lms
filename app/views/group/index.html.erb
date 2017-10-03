@@ -1,0 +1,9 @@
+<button class="btn btn-primary" data-toggle="modal" data-target="#add-user-group-modal">
+  <i class="fa fa-plus">&nbsp;Them nhom nguoi dung</i></button>
+<!-- Modal -->
+<div class="modal fade" id="add-user-group-modal" role="dialog">
+  <%= render 'new', roles: @roles %>
+</div>
+<div id="user-groups-list">
+  <%= render 'list' %>
+</div>

@@ -14,12 +14,11 @@ default: &default
   encoding: utf8
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   username: root
-  password:
-  socket: /var/run/mysqld/mysqld.sock
+  password: root
 
 development:
   <<: *default
-  database: lms_development
+  database: lms
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -49,6 +48,6 @@ test:
 #
 production:
   <<: *default
-  database: lms_production
+  database: lms
   username: lms
   password: <%= ENV['LMS_DATABASE_PASSWORD'] %>

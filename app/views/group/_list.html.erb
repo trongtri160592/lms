@@ -1,0 +1,21 @@
+<table class="table table-hover">
+  <thead>
+  <tr>
+    <th>Nhom nguoi dung</th>
+    <th>Chức năng</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% if @groups.length > 0 %>
+      <% @groups.each do |group| %>
+          <tr>
+            <td><%= group.name %></td>
+            <td>
+              <span class="fa fa-pencil"></span>
+              <span class=" fa fa-trash-o" title="Xoá"></span>
+            </td>
+          </tr>
+      <% end %>
+  <% end %>
+  </tbody>
+</table>
