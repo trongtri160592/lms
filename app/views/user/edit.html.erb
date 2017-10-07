@@ -1,0 +1,378 @@
+<div id="moduleWrapper">
+  <div id="navigator">
+    <a class="home" href="/?role=administrator">
+      <span class="mobile-show fa fa-dashboard"></span>
+      <span class="mobile-hide">Quản trị viên</span>
+    </a>
+
+    <span class="vertical-separator">/</span>
+    <a href="/users/index">Người dùng</a>
+    <span class="vertical-separator">/</span>
+    <a class="no-event active" href="/users/edit/5063">Võ Văn C</a>
+  </div>
+  <div id="moduleContent">
+    <div>
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs lms-tabs" role="tablist">
+        <li role="presentation" class="active">
+          <a href="#userInfo" aria-controls="userInfo" role="tab" data-toggle="tab">
+            <span class="mobile-hide">Thông tin</span>
+            <span class="mobile-show fa fa-info-circle"></span>
+          </a>
+        </li>
+        <li role="presentation" class="">
+          <a href="#courses" aria-controls="courses" role="tab" data-toggle="tab">
+            <span class="mobile-hide">Khoá học</span>
+            <span class="mobile-show fa fa-book"></span>
+          </a>
+        </li>
+        <li role="presentation" class="">
+          <a href="#userGroup" aria-controls="userGroup" role="tab" data-toggle="tab">
+            <span class="mobile-hide">Nhóm người dùng</span>
+            <span class="mobile-show fa fa-group"></span>
+          </a>
+        </li>
+      </ul>
+
+      <!-- Tab panes -->
+      <div class="tab-content lms-tab-content">
+        <div id="edit-user-form">
+        <%= render 'edit' %>
+        </div>
+        <div role="tabpanel" class="tab-pane " id="courses">
+          <div class="group-action">
+            <div class="form-group has-feedback pull-right">
+              <input class="form-control" placeholder="Tìm kiếm" onkeyup="userCourseSearching($(this).val());" id="txtUserCourseSearchBox" type="text">
+              <span class="form-control-feedback fa fa-search"></span>
+            </div>
+          </div>
+          <div class="paginationContainer">
+            <table class="lms-table" id="tblUserCourses">
+              <thead>
+              <tr>
+                <th class="text-left">Tên khoá học</th>
+                <th class="mobile-hide">Ngày ghi danh</th>
+                <th class="btn-group-5 m-btn-group-1" onclick="sortAssign(this)" data-sort="assign">
+                  <span class="mobile-hide">Cấp khoá học</span>
+                  <span class="mobile-show">Cấp</span>
+                  <span class="action fa fa-caret-down"></span>
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr data-courseid="993" style="display: table-row;" class="paginationItemPage1">
+                <td class="key">
+                  <a href="/courses/edit/993">Vận hành CLS trong Doanh Nghiệp</a>
+                </td>
+                <td class="text-center key mobile-hide">-</td>
+                <td class="text-center">
+                  <input class="ipt-action" value="" type="checkbox">
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="button-action-group">
+            <button class="btn btn-save btn-fixed-width xm-btn-full-width" type="button" id="btnSaveAssignCourse">Lưu</button>
+            <button class="btn btn-cancel btn-expanded-width xm-btn-full-width" type="button" onclick="redirectTo('/users/index')">Về
+              trang quản lý
+            </button>
+          </div>
+        </div>
+        <div role="tabpanel" class="tab-pane " id="userGroup">
+          <div class="group-action">
+            <div class="form-group has-feedback pull-right">
+              <input class="form-control" placeholder="Tìm kiếm" onkeyup="userGroupSearching($(this).val());" id="txtUserGroupSearchBox" type="text">
+              <span class="form-control-feedback fa fa-search"></span>
+            </div>
+          </div>
+          <div class="paginationContainer">
+            <table class="lms-table" id="tblUserGroups">
+              <thead>
+              <tr>
+                <th class="text-left">Tên nhóm</th>
+                <th class="text-left mobile-hide">Chi nhánh</th>
+                <th class="btn-group-3" onclick="sortAssign(this)" data-sort="assign">
+                  Ghi danh
+                  <span class="action fa fa-caret-down"></span>
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr data-groupid="6409" style="display: table-row;" class="paginationItemPage1">
+                <td class="key">
+                  <a href="/groups/edit/6409">Nhóm quản lý</a>
+                </td>
+                <td class="mobile-hide">-</td>
+                <td class="text-center">
+                  <input class="ipt-action" value="" type="checkbox">
+                </td>
+              </tr>
+              <tr data-groupid="6410" style="display: table-row;" class="paginationItemPage1">
+                <td class="key">
+                  <a href="/groups/edit/6410">Nhóm người dạy</a>
+                </td>
+                <td class="mobile-hide">-</td>
+                <td class="text-center">
+                  <input class="ipt-action" value="" type="checkbox">
+                </td>
+              </tr>
+              <tr data-groupid="6411" style="display: table-row;" class="paginationItemPage1">
+                <td class="key">
+                  <a href="/groups/edit/6411">Nhóm người học</a>
+                </td>
+                <td class="mobile-hide">-</td>
+                <td class="text-center">
+                  <input class="ipt-action" value="" type="checkbox">
+                </td>
+              </tr>
+              <tr data-groupid="6788" style="display: table-row;" class="paginationItemPage1">
+                <td class="key">
+                  <a href="/groups/edit/6788">Test</a>
+                </td>
+                <td class="mobile-hide">-</td>
+                <td class="text-center">
+                  <input class="ipt-action" value="" type="checkbox">
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="button-action-group">
+            <button class="btn btn-save btn-fixed-width xm-btn-full-width" type="button" id="btnSaveAssignGroup">Lưu</button>
+            <button class="btn btn-cancel btn-expanded-width xm-btn-full-width" type="button" onclick="redirectTo('/users/index')">Về
+              trang quản lý
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Script for editing user -->
+    <script>
+        $(document).ready(function () {
+            $('#editUserInfo input').keypress(function () {
+                $(this).parent().removeClass('has-error');
+                $(this).parent().parent().find('.error-message').text('').hide();
+            });
+
+            $('#date-of-birth-select').datepicker({
+                format: 'dd/mm/yyyy',
+                language: 'vn',
+                startDate: '04/10/1917',
+                endDate: '04/10/2017',
+            });
+
+            $('#btnEditUser').click(function () {
+                $('#editUserInfo .error-message').text('').hide();
+                $('#editUserInfo .has-error').removeClass('has-error');
+                var errorCount = 0;
+                var htmlEl = new RegExp(/<[a-zA-Z!/]+/g);
+
+                $('#editUserInfo').find('input[type=text]').each(function () {
+                    if (htmlEl.test($(this).val())) {
+                        $(this).parents('.lms-input-group').find('.error-message').show();
+                        $(this).parent().addClass('has-error');
+                        $(this).parents('.lms-input-group').find('.error-message').text('Bạn có thể đã nhập sai trường thông tin này');
+                        errorCount++;
+                    }
+                });
+
+                $('#editUserInfo').find('input[type=password]').each(function () {
+                    if (htmlEl.test($(this).val())) {
+                        $(this).parents('.lms-input-group').find('.error-message').show();
+                        $(this).parent().addClass('has-error');
+                        $(this).parents('.lms-input-group').find('.error-message').text('Bạn có thể đã nhập sai trường thông tin này');
+                        errorCount++;
+                    }
+                });
+
+                $('#editUserInfo').find('textarea').each(function () {
+                    if (htmlEl.test($(this).val())) {
+                        $(this).parents('.lms-input-group').find('.error-message').show();
+                        $(this).parent().addClass('has-error');
+                        $(this).parents('.lms-input-group').find('.error-message').text('Bạn có thể đã nhập sai trường thông tin này');
+                        errorCount++;
+                    }
+                });
+
+                if (errorCount == 0) {
+                    var form = new FormData();
+                    form.append("UserId", '5063');
+                    form.append("EditFirstName", $('#editUserInfo [name=EditFirstName]').val());
+                    form.append("EditLastName", $('#editUserInfo [name=EditLastName]').val());
+                    form.append("EditUserName", $('#editUserInfo [name=EditUserName]').val());
+                    form.append("EditPassword", $('#editUserInfo [name=EditPassword]').val());
+                    form.append("EditEmail", $('#editUserInfo [name=EditEmail]').val());
+                    form.append("EditGender", $('#editUserInfo [name=EditGender]:checked').val());
+                    form.append("EditBirthday", $('#editUserInfo [name=EditBirthday]').val());
+                    form.append("EditPhone", $('#editUserInfo [name=EditPhone]').val());
+                    form.append("EditAddress", $('#editUserInfo [name=EditAddress]').val());
+                    form.append("EditCompany", $('#editUserInfo [name=EditCompany]').val());
+                    form.append("EditAcademic", $('#editUserInfo [name=EditAcademic]').val());
+                    form.append("EditPosition", $('#editUserInfo [name=EditPosition]').val());
+                    form.append("EditTimeZone", $('#editUserInfo [name=EditTimeZone]').val());
+                    form.append("EditPublic", $('#editUserInfo [name=EditPublic]:checked').val());
+                    form.append("EditActive", $('#editUserInfo [name=EditActive]:checked').val());
+                    form.append("EditBio", $('#editUserInfo [name=EditBio]').val());
+                    form.append("EditUserType", $('#editUserInfo [name=EditUserType]').val());
+                    if (document.getElementById("iptEditAvatar").files.length > 0 && document.getElementById("iptEditAvatar").value != '') {
+                        form.append("EditAvatar", document.getElementById("iptEditAvatar").files[0]);
+                    } else if ($('#editUserInfo .select-file').attr('data-select') == 'removed') {
+                        form.append("EditAvatar", 'REMOVED');
+                    }
+
+                    $.ajax({
+                        url: '/users/edit/',
+                        data: form,
+                        type: 'post',
+                        dataType: 'json',
+                        contentType: false,
+                        processData: false,
+                        success: function (result) {
+                            if (result.indexOf('ERROR:') == 0) {
+                                if (result.indexOf('FIRSTNAME:') >= 0) {
+                                    $('#editUserInfo .firstname-error').show();
+                                    $('#editUserInfo .firstname-error').parent().children('.input-group-content').addClass('has-error');
+                                    $('#editUserInfo .firstname-error').text(result.substr(result.indexOf('FIRSTNAME:'), result.indexOf('\n', result.indexOf('FIRSTNAME:')) - result.indexOf('FIRSTNAME:')).replace('FIRSTNAME:', ''));
+                                }
+
+                                if (result.indexOf('LASTNAME:') >= 0) {
+                                    $('#editUserInfo .lastname-error').show();
+                                    $('#editUserInfo .lastname-error').parent().children('.input-group-content').addClass('has-error');
+                                    $('#editUserInfo .lastname-error').text(result.substr(result.indexOf('LASTNAME:'), result.indexOf('\n', result.indexOf('LASTNAME:')) - result.indexOf('LASTNAME:')).replace('LASTNAME:', ''));
+                                }
+
+                                if (result.indexOf('USERNAME:') >= 0) {
+                                    $('#editUserInfo .username-error').show();
+                                    $('#editUserInfo .username-error').parent().children('.input-group-content').addClass('has-error');
+                                    $('#editUserInfo .username-error').text(result.substr(result.indexOf('USERNAME:'), result.indexOf('\n', result.indexOf('USERNAME:')) - result.indexOf('USERNAME:')).replace('USERNAME:', ''));
+                                }
+
+                                if (result.indexOf('PASSWORD:') >= 0) {
+                                    $('#editUserInfo .password-error').show();
+                                    $('#editUserInfo .password-error').parent().children('.input-group-content').addClass('has-error');
+                                    $('#editUserInfo .password-error').text(result.substr(result.indexOf('PASSWORD:'), result.indexOf('\n', result.indexOf('PASSWORD:')) - result.indexOf('PASSWORD:')).replace('PASSWORD:', ''));
+                                }
+
+                                if (result.indexOf('EMAIL:') >= 0) {
+                                    $('#editUserInfo .email-error').show();
+                                    $('#editUserInfo .email-error').parent().children('.input-group-content').addClass('has-error');
+                                    $('#editUserInfo .email-error').text(result.substr(result.indexOf('EMAIL:'), result.indexOf('\n', result.indexOf('EMAIL:')) - result.indexOf('EMAIL:')).replace('EMAIL:', ''));
+                                }
+
+                                if (result.indexOf('BIRTH:') >= 0) {
+                                    $('#editUserInfo .birthday-error').show();
+                                    $('#editUserInfo .birthday-error').parent().children('.input-group-content').addClass('has-error');
+                                    $('#editUserInfo .birthday-error').text(result.substr(result.indexOf('BIRTH:'), result.indexOf('\n', result.indexOf('BIRTH:')) - result.indexOf('BIRTH:')).replace('BIRTH:', ''));
+                                }
+
+                                if (result.indexOf('PHONE:') >= 0) {
+                                    $('#editUserInfo .phoneno-error').show();
+                                    $('#editUserInfo .phoneno-error').parent().children('.input-group-content').addClass('has-error');
+                                    $('#editUserInfo .phoneno-error').text(result.substr(result.indexOf('PHONE:'), result.indexOf('\n', result.indexOf('PHONE:')) - result.indexOf('PHONE:')).replace('PHONE:', ''));
+                                }
+                            } else if (result.indexOf('ERRORMSG:') == 0) {
+                                alertModal(result.substr(9), 'error');
+                            } else {
+                                alertModal('Người dùng [NAME] đã được cập nhật thành công'.replace('[NAME]', '<b style="color: #f00;">' + $('#editUserInfo [name=EditLastName]').val() + ' ' + $('#editUserInfo [name=EditFirstName]').val() + '</b>'));
+                                setTimeout(function () {
+                                    redirectTo('/users/index')
+                                }, 2000);
+                            }
+                        },
+                        error: function () {
+                            alertModal("Có lỗi xảy ra, xin vui lòng thử lại", 'error');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+
+
+    <!-- Script for assigning course -->
+    <script>
+        $(document).ready(function () {
+            userCourseSearching($('#txtUserCourseSearchBox').val());
+
+            $('#tblUserCourses input.ipt-action').change(function () {
+                if ($(this).prop('checked')) {
+                    $(this).parents('tr').children('td:nth-child(2)').text('04/10/2017');
+                } else {
+                    $(this).parents('tr').children('td:nth-child(2)').text('-');
+                }
+            });
+
+            $('#btnSaveAssignCourse').click(function () {
+                var cid = [];
+                $('#tblUserCourses').find('input.ipt-action:checked').each(function () {
+                    cid.push($(this).parents('tr').attr('data-courseid'));
+                });
+
+                showLoadingScreen();
+                $.post('/Users/AssignCourse', {'userId': '5063', 'courses': cid}, function (rs) {
+                    if (rs == 'ERROR') {
+                        alertModal("Có lỗi xảy ra, xin vui lòng thử lại", 'error');
+                    } else {
+                        sortActiveUp('#tblUserCourses');
+                        alertModal("Ghi danh người dùng vào khoá học thành công", 'success');
+                    }
+                    hideLoadingScreen();
+                });
+            });
+        });
+
+        function returnCoursePage() {
+            var curPage = window.location.hash.slice(window.location.hash.indexOf('page-') + 5);
+            if (isNaN(curPage) || curPage == '') {
+                curPage = 1;
+            }
+            $('#tblUserCourses').tvPagination({currentPage: curPage, pageSize: 15, search: true});
+        }
+
+        function userCourseSearching(keyword) {
+            $('#tblUserCourses').tvSearching({allField: false, keyword: keyword});
+            returnCoursePage();
+        }
+    </script>
+    <!-- Script for assigning course -->
+    <script>
+        $(document).ready(function () {
+            userGroupSearching($('#txtUserGroupSearchBox').val());
+
+            $('#btnSaveAssignGroup').click(function () {
+                var gid = [];
+                $('#tblUserGroups').find('input.ipt-action:checked').each(function () {
+                    gid.push($(this).parents('tr').attr('data-groupid'));
+                });
+                showLoadingScreen();
+                $.post('/Users/AssignGroup', {'userId': '5063', 'groups': gid}, function (rs) {
+                    if (rs == 'SUCCESS') {
+                        sortActiveUp('#tblUserGroups');
+                        alertModal("Ghi danh người dùng vào nhóm thành công", 'success');
+                    } else {
+                        alertModal("Có lỗi xảy ra, xin vui lòng thử lại", 'error');
+                    }
+                    hideLoadingScreen();
+                });
+            });
+        });
+
+        function returnGroupPage() {
+            var curPage = window.location.hash.slice(window.location.hash.indexOf('page-') + 5);
+            if (isNaN(curPage) || curPage == '') {
+                curPage = 1;
+            }
+            $('#tblUserGroups').tvPagination({currentPage: curPage, pageSize: 15, search: true});
+        }
+
+        function userGroupSearching(keyword) {
+            $('#tblUserGroups').tvSearching({allField: false, keyword: keyword});
+            returnGroupPage();
+        }
+    </script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  </div>
+</div>

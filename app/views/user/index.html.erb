@@ -26,7 +26,7 @@
             <input class="one-delete-js" type="checkbox">
           </td>
           <td class="key">
-            <a data-type="fullname" href="/nguoi-dung/sua/<%= user.id %>"><%= user.username %></a>
+            <%= link_to user.username, user_edit_path(id: user.id) %>
           </td>
           <td class="key mobile-hide"><%= user.username %></td>
           <td class="key mobile-hide">Người học</td>
@@ -35,9 +35,7 @@
             <a class="btn btn-action" href="/userreport/details/4372" title="Báo cáo">
               <span class="fa fa-area-chart"></span>
             </a>
-            <a class="btn btn-action" href="/users/edit/4372" title="Sửa">
-              <span class="fa fa-pencil"></span>
-            </a>
+            <%= link_to "<span class='fa fa-pencil'></span>".html_safe, user_edit_path(id: user.id) %>
             <button class="btn btn-action" title="Xoá">
               <span class="fa fa-trash"></span>
             </button>

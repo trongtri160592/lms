@@ -1,0 +1,235 @@
+<div role="tabpanel" class="tab-pane active" id="userInfo">
+  <%= form_for @user, url: user_update_path(id: @user.id), html: {id: "editUserInfo", style: "max-width: 800px; margin: 0 auto;"}, remote: true do |f| %>
+      <!--<form id="editUserInfo" style="max-width: 800px; margin: 0 auto;">-->
+      <div class="row">
+        <div class="col-md-12">
+          <h5 class="text-italic">(*) Thông tin bắt buộc</h5>
+        </div>
+        <div class="col-md-6 col-sm-8">
+          <div class="lms-input-group">
+            <div class="input-group-title right">Tên (*)</div>
+            <div class="input-group-content">
+              <!--<input name="EditFirstName" value="<%= @user.first_name %>" class="form-control" maxlength="15" type="text">-->
+              <%= f.text_field :first_name, class: "form-control", value: @user.first_name, maxlength: "15" %>
+            </div>
+            <span class="error-message firstname-error pull-right"></span>
+          </div>
+
+          <div class="lms-input-group">
+            <div class="input-group-title right">Họ (*)</div>
+            <div class="input-group-content">
+              <!--<input name="EditLastName" value="<%= @user.last_name %>" class="form-control" maxlength="50" type="text">-->
+              <%= f.text_field :last_name, class: "form-control", value: @user.last_name, maxlength: "50" %>
+            </div>
+            <span class="error-message lastname-error pull-right"></span>
+          </div>
+
+          <div class="lms-input-group">
+            <div class="input-group-title right">Tên đăng nhập (*)</div>
+            <div class="input-group-content">
+              <!--<input name="EditUserName" value="<%= @user.username %>" maxlength="32" class="form-control" type="text">-->
+              <%= f.text_field :username, class: "form-control", value: @user.username, maxlength: "32" %>
+            </div>
+            <span class="error-message username-error pull-right"></span>
+          </div>
+
+          <div class="lms-input-group">
+            <div class="input-group-title right">Mật khẩu</div>
+            <div class="input-group-content">
+              <!--<input name="EditPassword" value="" maxlength="32" class="form-control" type="password">-->
+              <%= f.password_field :password, class: "form-control", maxlength: "32" %>
+            </div>
+            <span class="error-message password-error pull-right"></span>
+          </div>
+
+          <div class="lms-input-group">
+            <div class="input-group-title right">Email (*)</div>
+            <div class="input-group-content">
+              <!--<input name="EditEmail" value="<%= @user.email %>" class="form-control" maxlength="100" type="text">-->
+              <%= f.email_field :email, class: "form-control", maxlength: "100" %>
+            </div>
+            <span class="error-message email-error pull-right"></span>
+          </div>
+        </div>
+        <div class="col-md-6 col-sm-4">
+          <div class="select-file">
+            <div class="select-file-title text-center">Ảnh đại diện</div>
+            <div class="select-file-thumbs no-selected" style="margin: 0 auto;" title="" data-toggle="tooltip" data-html="true" data-placement="bottom" data-original-title="Định dạng: JPG, PNG, BMP, GIF<br/\>Dung lượng tối đa: 3MB">
+              <span class="icon fa fa-camera" style="display: inline-block"></span>
+              <img class="img-thumbs" style="display: none">
+              <input name="EditAvatar" id="iptEditAvatar" accept="image/x-png, image/gif, image/jpeg, image/bmp" value="" class="hide" data-size="3" data-invalid="Vui lòng chọn tập tin hình ảnh dưới 3MB" type="file">
+              <button type="button" class="btn-select-file"></button>
+              <button type="button" class="btn-remove-file" style="display: none" title="Xoá ảnh">×</button>
+            </div>
+            <div class="text-center">
+              <span class="error-message avatar-error"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="separator"></div>
+      <div class="row">
+        <div class="col-md-12">
+          <h5 class="text-italic">Thông tin người dùng</h5>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="lms-input-group">
+            <div class="input-group-title right">Giới tính</div>
+            <div class="input-group-content">
+              <div class="group">
+                <% if @user.sex == 1 %>
+                    <%= f.radio_button :sex, '1', checked: true %>
+                <% else %>
+                    <%= f.radio_button :sex, '1' %>
+                <% end %>
+                <label for="radEditGenderMale" class="group-label input-label">Nam</label>
+              </div>
+              <div class="group">
+                <% if @user.sex == 2 %>
+                    <%= f.radio_button :sex, '2', checked: true %>
+                <% else %>
+                    <%= f.radio_button :sex, '2' %>
+                <% end %>
+                <label for="radEditGenderFemale" class="group-label input-label">Nữ</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="lms-input-group">
+            <div class="input-group-title right">Ngày sinh</div>
+            <div class="input-group-content form-group has-feedback">
+              <!--<input name="EditBirthday" value="" class="form-control" type="text">-->
+              <%= f.text_field :date_of_birth, id: 'date-of-birth-select', class: "form-control", value: @user.date_of_birth ? @user.date_of_birth.strftime("%d/%m/%Y ") : "" %>
+              <span class="fa fa-calendar form-control-feedback"></span>
+            </div>
+            <span class="error-message birthday-error pull-right"></span>
+          </div>
+
+          <div class="lms-input-group">
+            <div class="input-group-title right">Số điện thoại</div>
+            <div class="input-group-content">
+              <%= f.text_field :phone, class: "form-control", value: @user.phone %>
+            </div>
+            <span class="error-message phoneno-error pull-right"></span>
+          </div>
+
+          <div class="lms-input-group">
+            <div class="input-group-title right">Địa chỉ</div>
+            <div class="input-group-content">
+              <!--<input name="EditAddress" value="" class="form-control" maxlength="255" type="text">-->
+              <%= f.text_field :address, class: "form-control", value: @user.address, maxlength: 255 %>
+            </div>
+            <span class="error-message pull-right"></span>
+          </div>
+
+          <div class="lms-input-group">
+            <div class="input-group-title right">Công ty</div>
+            <div class="input-group-content">
+              <!--<input name="EditCompany" value="" class="form-control" maxlength="255" type="text">-->
+              <%= f.text_field :workplace, class: "form-control", value: @user.workplace, maxlength: 255 %>
+            </div>
+            <span class="error-message pull-right"></span>
+          </div>
+
+          <div class="lms-input-group">
+            <div class="input-group-title right">Học hàm</div>
+            <div class="input-group-content">
+              <!--<input name="academic_degree" value="" class="form-control" maxlength="50" type="text">-->
+              <%= f.text_field :academic_degree, class: "form-control", value: @user.academic_degree, maxlength: 50 %>
+            </div>
+            <span class="error-message pull-right"></span>
+          </div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="lms-input-group">
+            <div class="input-group-title">Kích hoạt</div>
+            <!--<div class="group">-->
+            <!--<input name="EditActive" id="radEditActive" value="True" checked="" type="radio">-->
+            <!--<label for="radEditActive" class="group-label input-label">Có</label>-->
+            <!--</div>-->
+            <!--<div class="group">-->
+            <!--<input name="EditActive" id="radEditInactive" value="False" type="radio">-->
+            <!--<label for="radEditInactive" class="group-label input-label">Không</label>-->
+            <!--</div>-->
+            <% if @user.active == 1 %>
+                <div class="group">
+                  <%= f.radio_button :active, '1', checked: true %>
+                  <label for="radEditActive" class="group-label input-label">Có</label>
+                </div>
+                <div class="group">
+                  <%= f.radio_button :active, '0' %>
+                  <label for="radEditActive" class="group-label input-label">Không</label>
+                </div>
+            <% else %>
+                <div class="group">
+                  <%= f.radio_button :active, '1' %>
+                  <label for="radEditActive" class="group-label input-label">Có</label>
+                </div>
+                <div class="group">
+                  <%= f.radio_button :active, '0', checked: true %>
+                  <label for="radEditActive" class="group-label input-label">Không</label>
+                </div>
+            <% end %>
+          </div>
+          <div class="lms-input-group">
+            <span class="input-group-title">Công khai thông tin</span>
+
+            <!--<div class="group">-->
+              <!--<input name="EditPublic" id="radEditPublic" value="True" checked="" type="radio">-->
+              <!--<label for="radEditPublic" class="group-label input-label">Có</label>-->
+            <!--</div>-->
+            <!--<div class="group">-->
+              <!--<input name="EditPublic" id="radEditUnpublic" value="False" type="radio">-->
+              <!--<label for="radEditUnpublic" class="group-label input-label">Không</label>-->
+            <!--</div>-->
+            <% if @user.public_info == 1 %>
+                <div class="group">
+                  <%= f.radio_button :public_info, '1', checked: true %>
+                  <label for="radEditActive" class="group-label input-label">Có</label>
+                </div>
+                <div class="group">
+                  <%= f.radio_button :public_info, '0' %>
+                  <label for="radEditActive" class="group-label input-label">Không</label>
+                </div>
+            <% else %>
+                <div class="group">
+                  <%= f.radio_button :public_info, '1' %>
+                  <label for="radEditActive" class="group-label input-label">Có</label>
+                </div>
+                <div class="group">
+                  <%= f.radio_button :public_info, '0', checked: true %>
+                  <label for="radEditActive" class="group-label input-label">Không</label>
+                </div>
+            <% end %>
+          </div>
+
+          <div class="lms-input-group">
+            <div class="input-group-title">Tiểu sử</div>
+            <!--<textarea class="form-control" name="EditBio" style="height: 196px;" maxlength="3000"></textarea>-->
+            <%= f.text_area :biography, class: "form-control", value: @user.biography, maxlength: 3000, style: "height: 156px;" %>
+            <span class="error-message pull-right"></span>
+          </div>
+
+          <div class="lms-input-group">
+            <div class="input-group-title">Kiểu người dùng</div>
+            <div class="input-group-content">
+              <!--<select name="EditUserType" class="form-control">-->
+                <!--<option value="3207">Quản trị viên cấp cao</option>-->
+                <!--<option value="3208">Quản trị viên</option>-->
+                <!--<option value="3209">Người dạy</option>-->
+                <!--<option value="3210" selected="">Người học</option>-->
+                <!--<option value="3708">test kieu nguoi dung</option>-->
+              <!--</select>-->
+              <%= f.collection_select :group_id, Group.all, :id, :name, prompt: true %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="button-action-group">
+        <!--<button class="btn btn-save btn-fixed-width xm-btn-full-width" type="button" id="btnEditUser">Lưu</button>-->
+        <%= f.submit "Lưu", class: "btn btn-save btn-fixed-width xm-btn-full-width" %>
+        <button class="btn btn-cancel btn-fixed-width xm-btn-full-width" type="button" onclick="redirectTo('/users/index')">Huỷ</button>
+      </div>
+      <!--</form>-->
+  <% end %> <!-- end form -->
+</div>
