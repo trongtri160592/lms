@@ -29,6 +29,23 @@ ActiveRecord::Schema.define(version: 20171009034531) do
     t.index ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
   end
 
+  create_table "courses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+    t.string "name"
+    t.string "topic"
+    t.string "avatar"
+    t.text "introduction"
+    t.bigint "author_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "index_courses_on_author_id"
+  end
+
+  create_table "courses_teachers", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+    t.bigint "teacher_id"
+    t.bigint "course_id", null: false
+    t.index ["teacher_id"], name: "index_courses_teachers_on_teacher_id"
+  end
+
   create_table "groups", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -85,5 +102,7 @@ ActiveRecord::Schema.define(version: 20171009034531) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  add_foreign_key "courses", "users", column: "author_id"
+  add_foreign_key "courses_teachers", "users", column: "teacher_id"
   add_foreign_key "users", "groups"
 end

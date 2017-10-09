@@ -1,0 +1,13 @@
+<button class="btn btn-primary" data-toggle="modal" data-target="#add-course-modal">
+  <i class="fa fa-plus">&nbsp;Them khoa hoc</i></button>
+<!-- Modal -->
+<div id="add-course-modal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="padding-left: 13px;">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <%= render 'new' %>
+    </div>
+  </div>
+</div>
+<div id="user-groups-list">
+  <%= render 'list' %>
+</div>

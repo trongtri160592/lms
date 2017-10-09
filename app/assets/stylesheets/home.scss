@@ -163,3 +163,21 @@
   text-align: center;
   pointer-events: none;
 }
+
+.modal .btn-close {
+  background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+  border: medium none;
+  color: #aaa;
+  font-size: 20px;
+  line-height: 20px;
+  padding-bottom: 3px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 24px;
+  z-index: 10;
+}
+.modal .btn-close:hover {
+  background: #f00 none repeat scroll 0 0;
+  color: #fff;
+}
