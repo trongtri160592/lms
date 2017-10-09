@@ -1,0 +1,206 @@
+<button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+</button>
+<h4 style="font-size:14px;text-align:center">THÊM KHÓA HỌC</h4>
+<div class="separator"></div>
+<div id="SuaKhoaHoc"></div>
+<div class="modal-body">
+  <%= form_for @course, url: course_new_path, method: 'POST', remote: true do |f| %>
+      <!--Toàn bộ thông tin khóa học-->
+      <div class="display-information">
+        <!--Tên khóa học-->
+        <div class="lms-input-group">
+          <div class="input-group-title right">Tên khóa học (*)</div>
+          <div class="input-group-content">
+            <!--<input id="TenKhoaHoc" class="form-control" maxlength="255" name="TenKhoaHoc" style="border: 1px solid rgb(204, 204, 204);" type="text">-->
+            <%= f.text_field :name, class: "form-control", maxlength: 255, style: "border: 1px solid rgb(204, 204, 204);" %>
+          </div>
+          <div id="errorNameCourse" class="error-message pull-right" style="display:none"></div>
+        </div>
+        <!--Danh sách chủ đề-->
+        <div class="lms-input-group">
+          <div class="input-group-title right">Chủ đề</div>
+          <div class="input-group-content">
+            <select id="SelectCategories" class="form-control">
+              <option data-value="0">Lựa chọn chủ đề</option>
+            </select>
+          </div>
+        </div>
+        <!--Ảnh đại diện-->
+        <div class="col-md-6" style="margin-bottom:15px">
+          <div class="select-file UploadLibrary">
+            <div class="select-file-title text-center">Ảnh đại diện</div>
+            <div class="select-file-thumbs" id="khuploadphoto" style="margin:0 auto" data-toggle="tooltip" data-placement="bottom" data-html="true" title="" data-original-title="Định dạng: JPG, PNG, BMP, GIF. Dung lượng tối đa: 3MB">
+              <span id="btn-remove-image" onclick="XoaHinh(this)" style="z-index: 1000; display: none;">×</span>
+              <img src="" id="Picture" style="width:100%;height:100%;display:none">
+              <img src="/Content/Based/images/logo-khoahoc.jpg" id="PictureIcon" style="width: 100%; height: 100%;">
+              <button type="button" class="btn-select-file" onclick="$('#KHUploadPhoto').trigger('click')"></button>
+            </div>
+            <input id="KHUploadPhoto" accept="image/*" style="font-size: 0px;width:100%;height:100%;display:none" type="file">
+
+            <div class="text-center">
+              <span class="error-message register_error_log" style="display: none;"></span>
+            </div>
+            <div class="upload-holder">
+              <input class="filesrc" value="/Content/QuanLyKhoaHoc/images/anh-dai-dien/noavatar.jpg" type="hidden">
+
+              <input class="fileid" value="" type="hidden">
+            </div>
+          </div>
+        </div>
+        <!--Video đại diện-->
+        <div class="col-md-6" style="margin-bottom:15px">
+          <div class="select-file UploadLibrary">
+            <div class="select-file-title text-center">Video giới thiệu</div>
+            <div class="divvideo">
+              <div class="select-file-thumbs" id="khuploadvideo" data-toggle="tooltip" data-placement="bottom" data-html="true" title="" style=" margin: 0 auto;width:100%" data-original-title="Định dạng: avi, flv, mp4, wmv. Dung lượng tối đa: 300MB">
+                <span class="Video-remove-icon" onclick="XoaVideo(this)" style="z-index: 1000; display: none;">×</span>
+
+                <div id="PictureThubnail" style="width:100%;height:100%;display:none;border: 1px solid #eee;" data-video="" src=""></div>
+                <div style="font-size: 80px; line-height: 140px; color: rgb(207, 204, 204);" class="VideoIcon fa fa-film"></div>
+                <button type="button" class="btn-select-file" id="btn-upload-video" onclick="$('#KHVideoUpload').trigger('click')"></button>
+              </div>
+              <div class="KHprogess" style="height:7px;background:green;width:0%"><span id="percentProgess"></span>
+              </div>
+            </div>
+            <input id="KHVideoUpload" style="font-size: 0px;width:100%;height:100%;display:none" accept="video/*" type="file">
+
+            <div class="text-center">
+              <span class="error-message register_error_logVideo" style="display: none;"></span>
+            </div>
+
+          </div>
+        </div>
+        <!--Giới thiệu khóa học-->
+        <div class="lms-input-group">
+          <div class="input-group-title right">Giới thiệu khóa học</div>
+          <div class="input-group-content">
+            <!--<textarea class="form-control GioiThieuKhoaHoc" cols="20" id="GioiThieuKhoaHoc" maxlength="4000" name="GioiThieuKhoaHoc" rows="2" style="visibility: hidden; display: none;"></textarea>-->
+            <%= f.text_area :introduction, class: 'form-control', cols: 20, maxlength: 4000, rows: 2 %>
+
+          </div>
+          <div id="errorNameCourse" class="error-message pull-right" style="display:none"></div>
+        </div>
+      </div>
+  <% end %>
+  <!--Danh sách giáo viên và những người được chỉ định làm giáo viên-->
+  <div class="display-information">
+    <div class="col-md-12" style="padding-left:0px">
+      <h5 class="text-italic">DANH SÁCH GIÁO VIÊN</h5>
+    </div>
+    <!--Danh sách giáo viên-->
+    <div class="lms-input-group">
+      <div class="paginationContainer">
+        <table class="tablecourse" id="vunggiaovien">
+          <thead>
+          <tr>
+            <th>Tên giáo viên</th>
+            <th class="text-center">Chủ khóa học</th>
+            <th class="text-center">Chi tiết</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr data-manguoidung="4367" data-chu="true" class="paginationItemPage1" style="display: table-row;">
+
+            <td>- Admin</td>
+            <td class="text-center"><input name="chukhoahoc" checked="" type="radio"></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!--Danh sách những người được chỉ định làm giáo viên-->
+    <div style="padding-top : 10px;">
+      <div style="display : table; margin : 20px 0px; width : 100%; height : 100%;">
+        <div>
+          <div style="float : left; width : 50%;">
+            <input id="btnclicknguoidung" class="form-control" style="float : left; width: 15px; height: 15px; margin-right: 15px;" type="checkbox">
+            <span>Thêm giáo viên</span>
+          </div>
+          <div style="float : right; width : 50%;">
+            <div class="form-group has-feedback pull-right" style="margin: 0;">
+              <input class="form-control" placeholder="Tìm kiếm người dùng" id="txtUserSearchBox" onkeyup="searchingUser($(this).val())" type="text">
+              <span class="form-control-feedback fa fa-search"></span>
+            </div>
+          </div>
+        </div>
+        <div id="vunghienthinguoidung" style="display: block;">
+          <div class="paginationContainer">
+            <table id="vungnguoidung" class="tablecourse">
+              <thead>
+              <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr data-manguoidung="4372" data-chu="true" class="paginationItemPage1" style="display: table-row;">
+                <td>duy tran nguyen</td>
+                <td class="text-center"><input type="checkbox"></td>
+              </tr>
+              <tr data-manguoidung="4377" data-chu="true" class="paginationItemPage1" style="display: table-row;">
+                <td>Phạm Tri</td>
+                <td class="text-center"><input type="checkbox"></td>
+              </tr>
+              <tr data-manguoidung="4378" data-chu="true" class="paginationItemPage1" style="display: table-row;">
+                <td>viên Giáo</td>
+                <td class="text-center"><input type="checkbox"></td>
+              </tr>
+              <tr data-manguoidung="4994" data-chu="true" class="paginationItemPage1" style="display: table-row;">
+                <td>d d</td>
+                <td class="text-center"><input type="checkbox"></td>
+              </tr>
+              <tr data-manguoidung="4995" data-chu="true" class="paginationItemPage1" style="display: table-row;">
+                <td>sfdsa dfsf</td>
+                <td class="text-center"><input type="checkbox"></td>
+              </tr>
+              <tr data-manguoidung="5012" data-chu="true" class="paginationItemPage1" style="display: table-row;">
+                <td>Nguyễn Văn A</td>
+                <td class="text-center"><input type="checkbox"></td>
+              </tr>
+              <tr data-manguoidung="5062" data-chu="true" class="paginationItemPage1" style="display: table-row;">
+                <td>Trần Thị B</td>
+                <td class="text-center"><input type="checkbox"></td>
+              </tr>
+              <tr data-manguoidung="5063" data-chu="true" class="paginationItemPage1" style="display: table-row;">
+                <td>Võ Văn C</td>
+                <td class="text-center"><input type="checkbox"></td>
+              </tr>
+              <tr data-manguoidung="5064" data-chu="true" class="paginationItemPage1" style="display: table-row;">
+                <td>test test</td>
+                <td class="text-center"><input type="checkbox"></td>
+              </tr>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--Nút lưu và hủy-->
+  <div class="button-action-group">
+    <input id="saveCourse" class="btn btn-save btn-fixed-width" value="Lưu" onclick="Save()" type="submit">
+    <input class="btn btn-cancel btn-fixed-width" style="margin-left:10px" data-dismiss="modal" value="Hủy" type="reset">
+  </div>
+</div>
+
+<script>
+    CKEDITOR.replace( 'course[introduction]', {
+        language: 'vi'
+    });
+</script>
+
+<script>
+    function searchingUser(keyword) {
+        $('#vungnguoidung').tvSearching({ allField: true, keyword: keyword });
+        returnCurrentPage();
+    }
+
+    $(document).ready(function () {
+        searching($('#txtSearchBox').val());
+        searchingUser($('#txtUserSearchBox').val());
+    });
+
+</script>
