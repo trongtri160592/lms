@@ -7,41 +7,51 @@
   </form>
 </div>
 
-<div>
-  <table class="table table-hover">
-    <thead>
-    <tr>
-      <th class="text-center btn-group-1"><input id="check-all-delete-js" type="checkbox"></th>
-      <th class="text-left">Tên người dùng</th>
-      <th class="text-left mobile-hide">Tên đăng nhập</th>
-      <th class="text-left mobile-hide">Kiểu người dùng</th>
-      <th class="date mobile-hide">Ngày tham gia</th>
-      <th class="btn-group-3">Chức năng</th>
-    </tr>
-    </thead>
-    <tbody>
-    <% @users.each do |user| %>
-        <tr data-id="4372" style="display: table-row;" class="paginationItemPage1">
-          <td class="text-center btn-group-1">
-            <input class="one-delete-js" type="checkbox">
-          </td>
-          <td class="key">
-            <%= link_to user.username, user_edit_path(id: user.id) %>
-          </td>
-          <td class="key mobile-hide"><%= user.username %></td>
-          <td class="key mobile-hide">Người học</td>
-          <td class="text-center key mobile-hide"><%= user.created_at.strftime("%d/%m/%Y ") %></td>
-          <td class="text-center">
-            <a class="btn btn-action" href="/userreport/details/4372" title="Báo cáo">
-              <span class="fa fa-area-chart"></span>
-            </a>
-            <%= link_to "<span class='fa fa-pencil'></span>".html_safe, user_edit_path(id: user.id) %>
-            <button class="btn btn-action" title="Xoá">
-              <span class="fa fa-trash"></span>
-            </button>
-          </td>
-        </tr>
-    <% end %>
-    </tbody>
-  </table>
+<div id="user-list">
+  <%= render 'list' %>
 </div>
+<script>
+    $(':file').on('change', function () {
+        var file = this.files[0];
+        if (file.size > 5 * 1024 * 1024) {
+            alert('max upload size is 5M')
+        }
+    });
+
+    $('#btn-excel-submit').on('click', function () {
+        $.ajax({
+            url: '/add-user',
+            type: 'POST',
+
+            // Form data
+            data: new FormData($('form')[0]),
+
+            // Tell jQuery not to process data or worry about content-type
+            // You *must* include these options!
+            cache: false,
+            contentType: false,
+            processData: false,
+
+            // Custom XMLHttpRequest
+            xhr: function () {
+                var myXhr = $.ajaxSettings.xhr();
+                if (myXhr.upload) {
+                    // For handling the progress of the upload
+                    myXhr.upload.addEventListener('progress', function (e) {
+                        if (e.lengthComputable) {
+                            $('progress').attr({
+                                value: e.loaded,
+                                max: e.total,
+                            });
+                        }
+                    }, false);
+                }
+                return myXhr;
+            },
+            success: function (data) {
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+            }
+        });
+    });
+</script>

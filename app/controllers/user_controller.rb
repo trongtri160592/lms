@@ -1,5 +1,5 @@
 class UserController < ApplicationController
-  skip_before_action :verify_authenticity_token, :only => [:add_user]
+  skip_before_action :verify_authenticity_token, :only => [:add_list]
   require 'rubygems'
   require 'roo'
 
@@ -7,7 +7,7 @@ class UserController < ApplicationController
     @users = User.all
   end
 
-  def add_user
+  def add_list
     uploader = UserUploader.new
     uploader.store!(params[:file])
 
@@ -18,12 +18,17 @@ class UserController < ApplicationController
       p.username = row[0]
       p.email = row[1]
       p.password = row[2]
-      p.save
+      if p.save
+        logger.debug "Luu nguoi dung thanh cong"
+      else
+        logger.debug "Loi: #{p.errors.messages}"
+      end
     end
     uploader.remove!
     respond_to do |format|
       format.js
     end
+    @users = User.all
   end
 
   def edit

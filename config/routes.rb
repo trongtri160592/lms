@@ -9,7 +9,7 @@ Rails.application.routes.draw do
 
   get '/quan-ly-nguoi-dung', to: 'user#index'
   get '/quan-ly-nhom-nguoi-dung', to: 'group#index'
-  post '/add-user', to: 'user#add_user'
+  post '/add-user', to: 'user#add_list'
   get '/nguoi-dung/:id/sua', to: 'user#edit', as: 'user_edit'
   patch '/nguoi-dung/:id/sua', to: 'user#update', as: 'user_update'
 
