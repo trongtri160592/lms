@@ -1,0 +1,31 @@
+<div class="modal-dialog" role="document">
+  <div class="modal-content" style="padding-top:20px">
+    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+    </button>
+    <h4 style="font-size:14px;text-align:center" id="titleUtypes">THÊM CHỦ ĐỀ</h4>
+    <div class="separator"></div>
+    <div class="row">
+	  <%= form_for @topic, url: topic_new_path, remote: true do |f| %> 
+      <div class="col-md-12">
+        <div class="lms-input-group">
+          <div class="input-group-title right">Chủ đề</div>
+          <div class="input-group-content">
+            <%= f.text_field :name, class: "form-control", maxlength: 255, style: "border: 1px solid rgb(204, 204, 204);" %>
+		  </div>
+          <span id="errorNameCourse" class="error-message firstname-error pull-right" style="display: none;"></span>
+        </div>
+		<div class="lms-input-group">
+          <div class="input-group-title right">Mô tả</div>
+		  <div class="input-group-content">
+            <%= f.text_area :description, class: "form-control", maxlength: 4000, style: "border: 1px solid rgb(204, 204, 204);", rows: 10 %>
+		  </div>
+		</div>
+      </div>
+	  <div class="button-action-group">
+          <button id="btn-save-group" class="btn btn-save btn-fixed-width xm-btn-full-width" value="Lưu">Lưu</button>
+          <button class="btn btn-cancel btn-fixed-width xm-btn-full-width" data-dismiss="modal" value="Hủy">Huỷ</button>
+      </div>
+	  <% end %>
+    </div>
+  </div>
+</div>

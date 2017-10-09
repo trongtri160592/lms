@@ -1,0 +1,21 @@
+<table class="table table-hover">
+  <thead>
+  <tr>
+    <th>Chủ đề</th>
+    <th>Chức năng</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% if @topics.length > 0 %>
+      <% @topics.each do |topic| %>
+          <tr>
+            <td><%= topic.name %></td>
+            <td>
+              <span class="fa fa-pencil"></span>
+              <span class=" fa fa-trash-o" title="Xoá"></span>
+            </td>
+          </tr>
+      <% end %>
+  <% end %>
+  </tbody>
+</table>

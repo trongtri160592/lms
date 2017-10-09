@@ -16,5 +16,7 @@ Rails.application.routes.draw do
   get '/groups/new', to: 'group#new'
   post '/groups/new', to: 'group#create'
 
+  get '/quan-ly-chu-de', to: 'topic#index', as: 'topic'
+  post '/topics/new', to: 'topic#create', as: 'topic_new'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
