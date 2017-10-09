@@ -5,7 +5,7 @@
     <h4 style="font-size:14px;text-align:center" id="titleUtypes">THÊM CHỦ ĐỀ</h4>
     <div class="separator"></div>
     <div class="row">
-	  <%= form_for @topic, url: topic_new_path, remote: true do |f| %> 
+	  <%= form_for @topic, url: topic_new_path, remote: true, id: "topic-new-form" do |f| %> 
       <div class="col-md-12">
         <div class="lms-input-group">
           <div class="input-group-title right">Chủ đề</div>

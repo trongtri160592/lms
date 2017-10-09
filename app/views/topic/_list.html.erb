@@ -19,3 +19,60 @@
   <% end %>
   </tbody>
 </table>
+
+<div ng-app="sortApp" ng-controller="mainController">
+  <form>
+    <div class="form-group">
+      <div class="input-group">
+        <div class="input-group-addon"><i class="fa fa-search"></i></div>
+        <input type="text" class="form-control" placeholder="Tìm chủ đề" ng-model="searchTopic">
+      </div>      
+    </div>
+  </form>
+  
+  <table class="table table-hover table-striped">
+    <thead>
+      <tr>
+        <td>
+          <span ng-click="sortType = 'name'; sortReverse = !sortReverse" style="cursor: pointer;">
+            Tiêu đề 
+            <span ng-show="sortType == 'name' && !sortReverse" class="fa fa-caret-down"></span>
+            <span ng-show="sortType == 'name' && sortReverse" class="fa fa-caret-up"></span>
+          </span>
+        </td>
+        <td>
+          <span style="cursor: pointer;">Chức năng</span>
+        </td>
+      </tr>
+    </thead>
+    
+    <tbody>
+      <tr ng-repeat="topic in topics | orderBy:sortType:sortReverse | filter:searchTopic">
+        <td>{{ topic.name }}</td>
+        <td>
+		  <span class="fa fa-pencil"></span>
+          <span class=" fa fa-trash-o" title="Xoá"></span>
+		</td>
+      </tr>
+    </tbody>
+    
+  </table>
+</div>
+
+<script>
+	angular.module('sortApp', [])
+.controller('mainController', function($scope) {
+  $scope.sortType     = 'name';
+  $scope.sortReverse  = false;
+  $scope.searchTopic   = '';
+  $scope.topics = <%= @topics.to_json %>;
+  
+  // create the list of sushi rolls 
+  $scope.sushi = [
+    { name: 'Cali Roll', fish: 'Crab', tastiness: 2 },
+    { name: 'Philly', fish: 'Tuna', tastiness: 4 },
+    { name: 'Tiger', fish: 'Eel', tastiness: 7 },
+    { name: 'Rainbow', fish: 'Variety', tastiness: 6 }
+  ];
+});
+</script>
