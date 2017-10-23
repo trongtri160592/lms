@@ -1,4 +1,6 @@
 class CourseController < ApplicationController
+  before_action :authenticate_user!
+
   def index
     @users = User.all
     @course = Course.new

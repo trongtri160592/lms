@@ -11,3 +11,167 @@
 <div id="user-groups-list">
   <%= render 'list' %>
 </div>
+
+<style>
+    .register_error_log {
+        display: inline;
+        color: #fff;
+        font-size: 12px;
+        margin-top: 2px;
+        /*float: right;*/
+        background: #d9534f;
+    }
+
+    .register_error_logVideo {
+        display: inline;
+        color: #fff;
+        font-size: 12px;
+        margin-top: 2px;
+        /*float: right;*/
+        background: #d9534f;
+    }
+
+    .btn-file input[type=file] {
+        position: absolute;
+        top: 0;
+        right: 0;
+        min-width: 100%;
+        min-height: 100%;
+        font-size: 100px;
+        text-align: right;
+        filter: alpha(opacity=0);
+        opacity: 0;
+        outline: none;
+        background: white;
+        cursor: inherit;
+        display: block;
+    }
+
+    #btn-remove-image {
+        width: 17px;
+        height: 17px;
+        z-index: 2;
+        position: absolute;
+        color: #808080;
+        border-radius: 50%;
+        border: solid 1px;
+        background: none;
+        display: none;
+        right: 5px;
+        top: 5px;
+        font-size: 10px;
+    }
+
+    .Video-remove-icon {
+        width: 17px;
+        height: 17px;
+        z-index: 2;
+        position: absolute;
+        color: #808080;
+        border-radius: 50%;
+        border: solid 1px;
+        background: none;
+        display: none;
+        right: 5px;
+        top: 5px;
+        font-size: 10px;
+    }
+
+    .Video-remove-icon:hover {
+        color: #f48c11 !important;
+    }
+
+    #btn-remove-image:hover {
+        color: #f48c11 !important;
+    }
+
+    #khuploadphoto:hover #PictureIcon {
+        color: #f48c11 !important;
+    }
+
+    #khuploadvideo:hover .VideoIcon {
+        color: #f48c11 !important;
+    }
+
+    .dropdown-combobox-group {
+        border: 1px solid #ccc;
+        width: 300px;
+        padding-left: 10px;
+        float: left;
+        position: relative;
+        margin-top: -3px;
+    }
+
+    .dropdown-combobox-group > *:first-child {
+        position: absolute;
+        top: 50%;
+        transform: translate(0,-50%);
+    }
+
+    .dropdown-combobox-group > button {
+        float: right;
+        border: none;
+        background: #ccc;
+        height: 100%;
+        padding: 0px 7px;
+        font-size: 20px;
+        outline: none;
+    }
+
+    .dropdown-combobox-group > button + * {
+        position: absolute;
+        border: 1px solid #ccc;
+        top: 32px;
+        left: 0px;
+        width: 100%;
+        background: white;
+        display: none;
+        z-index: 99;
+    }
+
+    .dropdown-combobox-group > button + * > * {
+        padding: 3px 10px;
+    }
+
+    .dropdown-combobox-group > button + * > *:hover {
+        color: white;
+        background: #f4a211;
+        cursor: pointer;
+    }
+
+    .dropdown-combobox-group > button + * > *:not(:last-child) {
+        border-bottom: 1px solid #ccc;
+    }
+
+    .tablecourse {
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    .tablecourse > thead > tr > th {
+        padding: 5px;
+        text-align: left;
+        font-style: normal;
+    }
+
+    .tablecourse > thead > tr > th:first-child {
+        width: 30%;
+    }
+
+    .tablecourse > thead > tr > th.text-center {
+        text-align: center;
+    }
+
+    .tablecourse > tbody > tr > td {
+        padding: 5px;
+        text-align: left;
+    }
+
+    .tablecourse > tbody > tr > td.text-center {
+        text-align: center;
+    }
+
+    #vunggiaovien > tbody > tr > td > span:hover {
+        cursor: pointer;
+    }
+</style>

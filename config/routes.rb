@@ -1,11 +1,10 @@
 Rails.application.routes.draw do
   devise_for :admins
-  devise_for :users, path: 'auth', path_names: {dang_nhap: 'login', sign_out: 'logout', password: 'secret', confirmation: 'verification', unlock: 'unblock', registration: 'register', sign_up: 'cmon_let_me_in'}
   root to: 'home#index'
 
-  devise_scope :user do
-    get 'dang_nhap', to: 'devise/sessions#new'
-  end
+  devise_for :users, controllers: {
+    sessions: 'users/sessions'
+  }
 
   get '/quan-ly-nguoi-dung', to: 'user#index'
   get '/quan-ly-nhom-nguoi-dung', to: 'group#index'

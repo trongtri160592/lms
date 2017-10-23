@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171009034531) do
+ActiveRecord::Schema.define(version: 20171014025454) do
 
   create_table "admins", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.string "email", default: "", null: false
@@ -37,7 +37,9 @@ ActiveRecord::Schema.define(version: 20171009034531) do
     t.bigint "author_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "head_teacher_id"
     t.index ["author_id"], name: "index_courses_on_author_id"
+    t.index ["head_teacher_id"], name: "index_courses_on_head_teacher_id"
   end
 
   create_table "courses_teachers", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|

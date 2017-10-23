@@ -1,5 +1,2 @@
-$("#topic-list").html($compile("<%= j render partial: 'list' %>")(scope));
+$("#topic-list").html("<%= j render partial: 'list' %>");
 $('#add-topic-modal').modal('hide');
-
-// clear form
-$("#new_topic").trigger("reset");

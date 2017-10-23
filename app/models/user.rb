@@ -9,6 +9,14 @@ class User < ApplicationRecord
   attr_accessor :login
   belongs_to :group, optional: true
 
+  def login=(login)
+    @login = login
+  end
+
+  def login
+    @login || self.username || self.email
+  end
+
   def self.find_first_by_auth_conditions(warden_conditions)
     conditions = warden_conditions.dup
     if login = conditions.delete(:login)
@@ -21,6 +29,7 @@ class User < ApplicationRecord
       end
     end
   end
+
 
   validates :username,
             :presence => true,
