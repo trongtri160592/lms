@@ -137,43 +137,12 @@
                   </tr>
                   </thead>
                   <tbody>
+				  <%= f.collection_check_boxes :teacher_ids, User.all, :id, :username do |b| %>
                   <tr data-manguoidung="4372" data-chu="true" class="paginationItemPage1" style="display: table-row;">
-                    <td>duy tran nguyen</td>
-                    <td class="text-center"><input type="checkbox"></td>
+                    <td><%= b.text %></td>
+                    <td class="text-center"><%= b.check_box %></td>
                   </tr>
-                  <tr data-manguoidung="4377" data-chu="true" class="paginationItemPage1" style="display: table-row;">
-                    <td>Phạm Tri</td>
-                    <td class="text-center"><input type="checkbox"></td>
-                  </tr>
-                  <tr data-manguoidung="4378" data-chu="true" class="paginationItemPage1" style="display: table-row;">
-                    <td>viên Giáo</td>
-                    <td class="text-center"><input type="checkbox"></td>
-                  </tr>
-                  <tr data-manguoidung="4994" data-chu="true" class="paginationItemPage1" style="display: table-row;">
-                    <td>d d</td>
-                    <td class="text-center"><input type="checkbox"></td>
-                  </tr>
-                  <tr data-manguoidung="4995" data-chu="true" class="paginationItemPage1" style="display: table-row;">
-                    <td>sfdsa dfsf</td>
-                    <td class="text-center"><input type="checkbox"></td>
-                  </tr>
-                  <tr data-manguoidung="5012" data-chu="true" class="paginationItemPage1" style="display: table-row;">
-                    <td>Nguyễn Văn A</td>
-                    <td class="text-center"><input type="checkbox"></td>
-                  </tr>
-                  <tr data-manguoidung="5062" data-chu="true" class="paginationItemPage1" style="display: table-row;">
-                    <td>Trần Thị B</td>
-                    <td class="text-center"><input type="checkbox"></td>
-                  </tr>
-                  <tr data-manguoidung="5063" data-chu="true" class="paginationItemPage1" style="display: table-row;">
-                    <td>Võ Văn C</td>
-                    <td class="text-center"><input type="checkbox"></td>
-                  </tr>
-                  <tr data-manguoidung="5064" data-chu="true" class="paginationItemPage1" style="display: table-row;">
-                    <td>test test</td>
-                    <td class="text-center"><input type="checkbox"></td>
-                  </tr>
-
+				  <% end %>
                   </tbody>
                 </table>
               </div>
@@ -184,7 +153,7 @@
 
       <!--Nút lưu và hủy-->
       <div class="button-action-group">
-        <input id="saveCourse" class="btn btn-save btn-fixed-width" value="Lưu" onclick="Save()" type="submit">
+		<%= f.submit "Lưu", class: 'btn btn-save btn-fixed-width' %>
         <input class="btn btn-cancel btn-fixed-width" style="margin-left:10px" data-dismiss="modal" value="Hủy" type="reset">
       </div>
   <% end %>
