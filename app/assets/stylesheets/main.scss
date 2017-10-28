@@ -1,0 +1,45 @@
+#moduleWrapper {
+  background: #fff;
+  color: #333;
+  width: 100%;
+  border: 1px solid #ccc;
+}
+
+#navigator {
+  background: #ddd;
+  width: 100%;
+  height: 50px;
+  padding: 15px;
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#navigator a {
+  color: inherit;
+}
+
+#navigator a.active {
+  font-weight: bold;
+  line-height: 18px;
+}
+
+#navigator .home {
+  font-size: 14px;
+}
+
+@media screen and (max-width: 767px) {
+  #navigator {
+    height: auto;
+    max-height: 70px;
+    font-size: 12px;
+    white-space: normal;
+  }
+}
+
+#moduleContent {
+  width: 100%;
+  display: table;
+  padding: 15px;
+}

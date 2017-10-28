@@ -9,7 +9,7 @@
   <% if @courses.length > 0 %>
       <% @courses.each do |course| %>
           <tr>
-            <td><%= course.name %></td>
+            <td><%= link_to course.name, course_detail_path(id: course.id) %></td>
             <td>
               <span class="fa fa-pencil"></span>
               <span class=" fa fa-trash-o" title="Xoá"></span>

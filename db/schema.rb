@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171014025454) do
+ActiveRecord::Schema.define(version: 20171028155838) do
 
   create_table "admins", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.string "email", default: "", null: false
@@ -42,8 +42,8 @@ ActiveRecord::Schema.define(version: 20171014025454) do
     t.index ["head_teacher_id"], name: "index_courses_on_head_teacher_id"
   end
 
-  create_table "courses_teachers", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
-    t.bigint "teacher_id"
+  create_table "courses_teachers", primary_key: ["teacher_id", "course_id"], force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+    t.bigint "teacher_id", null: false
     t.bigint "course_id", null: false
     t.index ["teacher_id"], name: "index_courses_teachers_on_teacher_id"
   end
@@ -57,6 +57,27 @@ ActiveRecord::Schema.define(version: 20171014025454) do
   create_table "groups_roles", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.bigint "group_id", null: false
     t.bigint "role_id", null: false
+  end
+
+  create_table "lesson_types", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "lessons", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+    t.bigint "course_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "name"
+    t.bigint "lesson_type_id"
+    t.bigint "user_id"
+    t.string "avatar"
+    t.string "url"
+    t.integer "approved", limit: 1
+    t.index ["course_id"], name: "index_lessons_on_course_id"
+    t.index ["lesson_type_id"], name: "index_lessons_on_lesson_type_id"
+    t.index ["user_id"], name: "index_lessons_on_user_id"
   end
 
   create_table "roles", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
@@ -106,5 +127,8 @@ ActiveRecord::Schema.define(version: 20171014025454) do
 
   add_foreign_key "courses", "users", column: "author_id"
   add_foreign_key "courses_teachers", "users", column: "teacher_id"
+  add_foreign_key "lessons", "courses"
+  add_foreign_key "lessons", "lesson_types"
+  add_foreign_key "lessons", "users"
   add_foreign_key "users", "groups"
 end

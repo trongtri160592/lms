@@ -1,0 +1,92 @@
+.content-line {
+  margin: 5px 0px;
+  height: 1px;
+  background-color: #ccc;
+}
+
+.fa-quote-left {
+}
+
+.content-info-course {
+  display: table;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.content-info-course .course-title {
+  padding: 0 15px;
+  width: 100%;
+  float: left;
+  font-weight: bold;
+  font-size: 18px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+
+.content-img-course {
+  width: 25%;
+  padding: 0 15px;
+  float: left;
+}
+
+.content-img-course > img {
+  width: 100%;
+  height: auto;
+}
+
+.content-desciption-course {
+  width: 75%;
+  padding: 0 15px;
+  float: right;
+}
+
+
+
+#setting-content {
+  width: 100%;
+}
+
+#setting-content > .btn-group, #setting-content > .btn {
+  float: left;
+  margin-right: 5px;
+  margin-top: 5px;
+}
+
+.content-show-content {
+  margin-top: 20px;
+  float: left;
+  width: 100%;
+}
+
+
+.content-tab {
+  float: left;
+}
+
+.content-tab a {
+  padding: 3px 20px;
+  background: #959595;
+  color: white;
+  vertical-align: bottom;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.content-tab a:nth-child(2) {
+  margin-left: -4px;
+}
+
+.content-tab a.active {
+  background: #0085ea;
+  padding: 5px 20px;
+}
+
+
+.manage-content {
+  display: none;
+}
+
+.manage-content.active {
+  display: block;
+}

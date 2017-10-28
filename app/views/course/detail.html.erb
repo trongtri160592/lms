@@ -1,0 +1,391 @@
+<h1>Chi tiet khoa hoc</h1>
+
+<div id="moduleWrapper">
+  <div id="navigator">
+    <a class="home" href="/?role=instructor">
+      <span class="mobile-show fa fa-book"></span>
+      <span class="mobile-hide">Người dạy</span>
+    </a>
+
+    <span class="vertical-separator">/</span>
+    <%= link_to "Khóa học", course_path %>
+    <span class ="vertical-separator">/</span>
+    <a class="no-event active" href="/contents/index/5865">Quản lý nội dung</a>
+  </div>
+  <div id="moduleContent">
+    <link href="/Content/Contents/css/Contents.css" rel="stylesheet">
+    <script src="/Content/Contents/js/Contents.js"></script>
+    <script src="/Content/Contents/js/bootstrap-datetimepicker/js/moment.min.js"></script>
+    <link href="/Content/Contents/js/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <script src="/Content/Contents/js/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <style>
+        .elearning-gray {
+            background: #e5e5e5;
+            color: black;
+            outline: none;
+        }
+
+        .elearning-gray:hover {
+            background: #c6c6c6;
+        }
+
+        .elearning-gray:active {
+            background: #f4a211;
+            color: white;
+        }
+
+        .list-item-course-handler {
+            float: right;
+            display: none;
+        }
+
+        .list-item-course-handler > .glyphicon {
+            cursor: pointer;
+        }
+
+        .list-course-item:hover > .list-item-course-handler {
+            display: block !important;
+        }
+
+        .mini-field {
+            width: 60px;
+            height: 35px;
+        }
+
+        .margin-left {
+            margin-left: 5px !important;
+        }
+
+        .margin-right {
+            margin-right: 5px !important;
+        }
+
+        .blue-sky {
+            border-color: #0087eb;
+            color: #0087eb;
+            background-color: white;
+        }
+
+        .green-leave {
+            border-color: #3e9722;
+            color: #3e9722;
+            background-color: white;
+        }
+
+        .dark-world {
+            border-color: #555555;
+            color: #555555;
+            background-color: white;
+        }
+    </style>
+    <div class="content-info-course row">
+      <div class="course-title"><%= @course.name %></div>
+      <div class="content-img-course">
+        <img src="/Content/Based/images/logo-khoahoc.jpg">
+      </div>
+      <div class="content-desciption-course">
+        <div style="padding:0 15px;">
+          <%= @course.introduction.html_safe if @course.introduction %>
+        </div>
+      </div>
+    </div>
+    <ul class="nav nav-tabs lms-tabs" role="tablist">
+      <li role="presentation" class="active"><a href="#setting-content" aria-controls="home" role="tab" data-toggle="tab">Nội dung</a></li>
+
+    </ul>
+    <div class="tab-content lms-tab-content">
+      <div id="setting-content" class="tab-pane active manage-content">
+        <div class="btn-group kbtn-hidden">
+          <button type="button" class="btn btn-add btn-sm dropdown-toggle limit-btn" style="width:100%" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="fa fa-plus"></span>
+            Thêm nội dung
+            <span class="fa fa-caret-down"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li>
+              <a href="/Contents/AddContent/5865?CodeType=content">Nội dung</a>
+            </li>
+            <li>
+              <a href="/Contents/AddContent/5865?CodeType=webcontent">Nội dung web</a>
+            </li>
+            <li role="separator" class="divider"></li>
+            <li>
+              <a href="/Contents/AddContent/5865?CodeType=video">Video</a>
+            </li>
+            <li>
+              <a href="/Contents/AddContent/5865?CodeType=audio">Âm thanh</a>
+            </li>
+            <li>
+              <a href="/Contents/AddContent/5865?CodeType=document">Tài liệu</a>
+            </li>
+            <li role="separator" class="divider"></li>
+            <li>
+              <a href="/Contents/AddContent/5865?CodeType=scorm">Scorm</a>
+            </li>
+            <li>
+              <a href="/Contents/AddContent/5865?CodeType=flash">Flash</a>
+            </li>
+            <li>
+              <a href="/Contents/AddContent/5865?CodeType=iframe">Iframe</a>
+            </li>
+            <li role="separator" class="divider"></li>
+            <li>
+              <a href="/Contents/CreateTest/5865">Bài kiểm tra</a>
+            </li>
+            <li>
+              <a href="/Contents/CreateSurvey/5865">Bài khảo sát</a>
+            </li>
+            <li>
+              <a href="/Contents/CreateAssignment/5865">Bài tiểu luận</a>
+            </li>
+            <li role="separator" class="divider"></li>
+            <li>
+              <a href="#" onclick="OpenCDCreator(); event.preventDefault();">Chuyên đề</a>
+            </li>
+          </ul>
+        </div>
+        <button type="button" class="btn btn-add btn-sm kbtn-hidden" onclick="StartOrder()">
+          <i class="fa fa-arrows-v"></i>
+          Sắp xếp
+        </button>
+        <button type="button" class="btn btn-add btn-sm kbtn limit-btn" onclick="redirectTo('/courses/edit/5865#start=user')">
+          <i class="fa fa-pencil"></i>
+          Gán người dùng
+        </button>
+        <button type="button" class="btn btn-add btn-sm kbtn limit-btn" onclick="redirectTo('/courses/edit/5865')">
+          <i class="fa fa-pencil"></i>
+          Sửa thông tin
+        </button>
+        <button type="button" class="btn btn-add btn-sm kbtn limit-btn" style="height:auto; line-height:inherit" onclick="redirectTo('/course/info/5865')">
+          <i class="fa fa-graduation-cap"></i>
+          Hiển thị như người học
+        </button>
+        <button type="button" class="btn btn-sm blue-sky" style="float:right" onclick="UpdateCourse('request_publish_course')">
+          Yêu cầu phát hành
+        </button>
+
+        <div id="DivContentController" class="content-show-content">
+
+          <script src="/Content/Contents/jqueryui/jquery-ui.js"></script>
+          <link href="/Content/Contents/jqueryui/jquery-ui.css" rel="stylesheet">
+          <style>
+              .content-name:hover {
+                  background-color: #CDE8FB;
+                  cursor: pointer;
+              }
+
+              .gly {
+                  font-size: 10px;
+                  top: 0;
+              }
+
+              .glyphicon-handle {
+                  float: right;
+                  cursor: pointer;
+                  display: block;
+              }
+
+              .list-group-item:hover > .col-sm-1 .glyphicon-handle {
+                  display: block;
+              }
+
+              .list-group-item:hover > .title .glyphicon-handle {
+                  display: block;
+              }
+
+              .list-group-item {
+                  cursor: pointer;
+                  height: 40px;
+                  padding-right: 0;
+                  /*background-color: #EBEBEB;*/
+              }
+
+              .children {
+                  background-color: #fff;
+                  height: 40px;
+                  padding-right: 0;
+              }
+
+              .BlankingHover {
+                  background-color: wheat;
+              }
+
+              .BlankingActive {
+                  background-color: #f0ad4e;
+              }
+
+              .ContentActive {
+                  background-color: #5bc0de;
+              }
+
+              .cd-parent {
+                  padding: 0;
+                  height: auto;
+              }
+
+              .cd-parent .title {
+                  padding: 10px 15px;
+              }
+
+              .cd-parent .holder {
+                  /*display: none;*/
+              }
+
+              .no-sort {
+                  display: none;
+              }
+
+              #saveorderpanel {
+                  display: none;
+              }
+
+              .spanSubmission {
+                  margin-left: 5px;
+                  background-color: #3a87ad;
+                  border-radius: 9px;
+                  /* font-weight: 600; */
+                  display: inline-block;
+                  padding: 2px 4px;
+                  font-size: 10.998px;
+                  font-weight: bold;
+                  line-height: 14px;
+                  color: #ffffff;
+                  vertical-align: baseline;
+                  white-space: nowrap;
+                  text-shadow: 0 -1px 0 rgba(0,0,0,0.25);
+                  padding-left: 9px;
+                  padding-right: 9px;
+              }
+
+              .limit {
+                  height: 26px;
+                  overflow: hidden;
+                  float: left;
+                  line-height: 25px;
+                  text-overflow: ellipsis;
+              }
+          </style>
+          <div class="list-group content-parent">
+            <div class="list-group-item active no-sort">
+                <span style="padding-left:14px">
+                    Kéo thả để thay đổi vị trí các nội dung
+                </span>
+            </div>
+            <div class="list-group-item" data-id="10631" data-name="test scorm" data-type="scorm">
+              <div class="col-sm-10 col-left">
+                        <span class="col-sm-6 col-title limit" style="padding-left:14px;float:left">
+                            test scorm
+                        </span>
+                        <span class="col-sm-3 col-status">
+                                <span class="label label-success">Đã duyệt</span>
+
+                        </span>
+
+
+                <span class="col-sm-3 col-author">- Admin</span>
+              </div>
+              <div class="col-sm-2 col-right">
+                <i class="glyphicon-handle glyphicon glyphicon-remove-circle margin-right margin-left" onclick="DeleteContent('content',10631)"></i>
+                <i class="glyphicon-handle glyphicon glyphicon-pencil margin-left margin-right kbtn-hidden" onclick="EditContent(10631, 'scorm')"></i>
+
+              </div>
+
+            </div>
+
+          </div>
+          <div id="saveorderpanel" class="button-action-group">
+            <button class="btn btn-save btn-fixed-width" onclick="SaveOrder()">Lưu</button>
+            <button class="btn btn-cancel btn-fixed-width" onclick="StopOrder()">Hủy</button>
+          </div>
+          <div id="content_pub_confirm" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+            <div class="modal-dialog modal-sm" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                  <h4 class="modal-title" id="mySmallModalLabel">Bạn muốn duyệt nội dung này?</h4>
+                </div>
+                <div class="modal-body">
+                  <div class="row" style="text-align:center">
+                    <button class="btn btn-save btn-fixed-width" data-val="approve_content" data-vel="" onclick="UpdateContentStatus(this)">Duyệt</button>
+                    <button class="btn btn-cancel btn-fixed-width" data-val="return_content" data-vel="" onclick="UpdateContentStatus(this)">Trả lại</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="content_pub_cancel" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+            <div class="modal-dialog modal-sm" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                  <h4 class="modal-title" id="mySmallModalLabel">Bạn muốn trả lại nội dung này?</h4>
+                </div>
+                <div class="modal-body">
+                  <div class="row" style="text-align:center">
+                    <button class="btn btn-cancel btn-fixed-width" data-val="return_content" data-vel="" onclick="UpdateContentStatus(this)">Trả lại</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal fade" id="licenseModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+
+            <div style="padding:20px;">
+              <div id="license-course" class="modal-body">
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-cancel btn-fixed-width" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal fade" id="viewRating" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="">
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+          <div class="modal-content">
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="CourseList" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal danh sach bai hoc -->
+    <div id="CDCreator" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <h4 style="text-align:center" class="modal-title">Thêm chuyên đề</h4>
+          </div>
+          <div class="modal-body">
+            <form class="form-horizontal">
+              <div class="form-group">
+                <label for="txtchuyende" class="col-sm-2 control-label">Chuyên đề</label>
+                <div class="col-sm-10">
+                  <input class="form-control" id="txtchuyende" placeholder="Tên chuyên đề..." type="text">
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer" style="text-align:center;">
+            <button id="btnaddcd" type="button" class="btn btn-save btn-fixed-width" onclick="CreateCD()">Lưu</button>
+            <button id="btnupdatecd" type="button" class="btn btn-save btn-fixed-width" data-id="" style="display:none" onclick="UpdateCD()">Cập nhật</button>
+            <button type="button" class="btn btn-cancel btn-fixed-width" data-dismiss="modal">Hủy</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal tao chuyen de -->
+
+  </div>
+</div>
