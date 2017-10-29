@@ -8,12 +8,79 @@
 
   <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script src="https://use.fontawesome.com/498f2c2c0d.js"></script>
   <script src="/ckeditor/ckeditor.js"></script>
 </head>
 
-<body class="header-fixed header-fixed-space">
+<body>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<% if current_user %>
+    <header>
+      <div class="container">
+        <div class="row">
+          <div class="brand">
+            <a href="/">
+              <img src="/Content/Based/images/vicls-logo-wb.png">
+            </a>
+          </div>
+          <div class="user-action-group">
+            <div class="message-action">
+              <a href="/messages/index" class="message mobibe-no-event" title="Tin nhắn">
+                <span class="fa fa-envelope"></span>
+                <span class="badge" id="messageCounter">1</span>
+              </a>
+              <ul>
+                <li>
+                  <a href="/messages/index"><span class="icon fa fa-envelope"></span> Hộp thư đến</a>
+                </li>
+                <li>
+                  <a href="/messages/create"><span class="icon fa fa-send"></span> Soạn tin nhắn</a>
+                </li>
+              </ul>
+            </div>
+            <div class="user-action">
+                            <span>
+                                    <a href="/account/info" class="mobibe-no-event">
+                                      <span style="font-weight: bold;"><span class="mobile-hide"> </span><%= current_user.username %></span>
+                                    </a>
+                                        <span class="vertical-separator">|</span>
+                                        <a class="mobile-hide" href="/?role=instructor">
+                                          <span>Người dạy</span>
+                                        </a>
+                                        <span class="mobile-show fa fa-book"></span>
+                                    <span class="fa fa-caret-down" style="margin-left: 10px;"></span>
+                            </span>
+              <ul>
+                <li>
+                  <a href="/?role=administrator"><span class="icon fa fa-dashboard"></span> Quản trị viên</a>
+                </li>
+                <li>
+                  <a href="/?role=learner"><span class="icon fa fa-graduation-cap"></span> Người học</a>
+                </li>
+                <li>
+                  <a href="/account/info"><span class="icon fa fa-user"></span> Thông tin cá nhân</a>
+                </li>
+                <li>
+                  <%= link_to '<span class="icon fa fa-address-book"></span> Khoá học của tôi'.html_safe, course_path %>
+                </li>
+                <li>
+                  <a href="/progress/index"><span class="icon fa fa-line-chart"></span> Tiến trình học tập</a>
+                </li>
+                <li>
+                  <%= link_to('<span class="icon fa fa-sign-out"></span> Đăng
+                    xuất'.html_safe, destroy_user_session_path, method: :delete) %>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </header>
+<% end %>
 <div class="container">
   <%= yield %>
 </div>

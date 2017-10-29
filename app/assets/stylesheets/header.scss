@@ -1,0 +1,229 @@
+header {
+  width: 100%;
+  background: #fff;
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 999;
+  border-bottom: 1px solid #ccc;
+}
+
+header .brand {
+  width: 200px;
+  max-width: 30%;
+  height: 80px;
+  padding: 15px;
+  text-align: left;
+  float: left;
+}
+
+header .brand a {
+  text-decoration: none;
+}
+
+header .brand a img {
+  max-width: 100%;
+  height: 100%;
+}
+
+header .user-action-group {
+  max-width: 70%;
+  height: 80px;
+  line-height: 30px;
+  padding: 0 15px;
+  float: right;
+}
+
+header .message-action, header .user-action {
+  height: 80px;
+  line-height: 30px;
+  padding: 25px 0;
+  position: relative;
+  text-align: right;
+  float: left;
+}
+
+header .message-action a, header .user-action a {
+  text-decoration: none;
+  color: inherit;
+}
+
+header .message-action > ul, header .user-action > ul {
+  display: none;
+}
+
+header .message-action:hover > ul, header .user-action:hover > ul {
+  display: block;
+  width: 200px;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  line-height: 30px;
+  text-align: left;
+  z-index: 900;
+}
+
+header .message-action:hover > ul {
+  left: 0;
+}
+
+header .message-action:hover > ul li, header .user-action:hover > ul li {
+  position: relative;
+  height: 40px;
+}
+
+header .message-action:hover > ul li .icon, header .user-action:hover > ul li .icon {
+  color: #aaa;
+  margin-right: 10px;
+  margin-left: 5px;
+  width: 20px;
+  text-align: center;
+}
+
+header .message-action:hover > ul li:first-child, header .user-action:hover > ul li:first-child {
+  border-top: 1px solid #ddd;
+  line-height: 28px;
+}
+
+header .message-action:hover > ul li:last-child, header .user-action:hover > ul li:last-child {
+  border-bottom: 1px solid #ddd;
+}
+
+header .message-action:hover > ul > li, header .user-action:hover > ul > li {
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+}
+
+header .message-action:hover > ul li > a, header .user-action:hover > ul li > a {
+  display: block;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 5px 15px;
+  color: #000;
+  text-decoration: none;
+}
+
+header .message-action:hover > ul > li:hover, header .user-action:hover > ul > li:hover {
+  border: none;
+}
+
+header .message-action:hover > ul > li > a:hover,
+header .message-action:hover > ul > li:hover > a,
+header .user-action:hover > ul > li > a:hover,
+header .user-action:hover > ul > li:hover > a {
+  background: #a8ce54;
+  color: #fff;
+}
+
+header .message-action:hover > ul > li > a:hover .icon,
+header .message-action:hover > ul > li:hover > a .icon,
+header .user-action:hover > ul > li > a:hover .icon,
+header .user-action:hover > ul > li:hover > a .icon {
+  color: #fff;
+}
+
+header .message-action {
+  width: 30px;
+  text-align: left;
+  margin-right: 20px;
+}
+
+header .message-action .message {
+  position: relative;
+}
+
+header .message-action .message .badge {
+  position: absolute;
+  top: 0;
+  left: 12px;
+  font-size: 8px;
+  background: red;
+  padding: 2px 3px;
+}
+
+@media screen and (max-width: 767px) {
+  header .brand, header .user-action-group {
+    height: 50px;
+    padding-left: 0;
+    padding-right: 5px;
+  }
+
+  header .brand {
+    padding: 10px 15px;
+  }
+
+  .banner .banner-text {
+    font-size: 16px;
+  }
+
+  header .message-action, header .user-action {
+    padding: 10px 0;
+    height: 50px;
+    position: initial;
+  }
+
+  header .message-action:hover > ul, header .user-action:hover > ul {
+    right: 0;
+    left: auto;
+    width: 224px;
+  }
+
+  header .message-action {
+    margin-right: 12px;
+  }
+}
+
+.banner {
+  width: 100%;
+  padding-top: 38%;
+  background-size: 100% 100%;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  position: relative;
+  font-family: "Proxima Nova";
+}
+
+.banner .gradient-header {
+  width: 100%;
+  height: 150px;
+  background: linear-gradient(#ffffff, transparent);
+  opacity: 0.8;
+}
+
+.banner .banner-text {
+  position: absolute;
+  width: 70%;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -30%);
+  font-size: 40px;
+  letter-spacing: 4px;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: center;
+  color: #fff;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.banner .mouse-scroll {
+  width: 20px;
+  height: 150px;
+  background: linear-gradient(#ffffff, transparent);
+  opacity: 0.8;
+}
+
+@media screen and (max-width: 767px) {
+  .banner .container {
+    width: 100%;
+  }
+
+  .banner .banner-text {
+    font-size: 16px;
+  }
+}
