@@ -1,0 +1,461 @@
+<div id="moduleWrapper" ontouchstart="">
+  <div id="navigator">
+    <a class="home" href="/?role=instructor">
+      <span class="mobile-show fa fa-book"></span>
+      <span class="mobile-hide">Người dạy</span>
+    </a>
+
+    <span class="vertical-separator">/</span>
+    <a href="/courses/index">Khoá học</a>
+    <span class="vertical-separator">/</span>
+    <a href="/contents/index/5865">Nội dung</a>
+    <span class="vertical-separator">/</span>
+    <a class="no-event active" href="/Contents/AddContent/5865?CodeType=document">Thêm nội dung</a>
+  </div>
+  <div id="moduleContent">
+
+    <style>
+      #caidat > input[type="radio"], input[type="checkbox"] {
+        margin: 4px 0 0;
+        margin-top: 1px \9;
+        line-height: normal;
+      }
+
+      .inputcenter {
+        text-align: center;
+      }
+
+      #ShowQuestion .form-group {
+        margin-left: 0px !important;
+        margin-right: 0px !important;
+      }
+
+      .ShowContent_error {
+        /*outline: 1px solid red !important;*/
+      }
+
+      .padingRradio {
+        font-weight: normal !important;
+        margin-right: 10px !important;
+      }
+
+      .uploading {
+        display: none;
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999999999;
+        overflow: hidden;
+      }
+
+      .uploading .progress-box {
+        position: absolute;
+        top: 30%;
+        left: 50%;
+        transform: translate(-50%, -30%);
+        background: #fff;
+        width: 100%;
+        max-width: 400px;
+        padding: 30px;
+      }
+
+      .uploading .progress-box .file-info {
+        text-align: center;
+      }
+
+      .uploading .progress-box .file-info .file-name {
+        font-weight: bold;
+      }
+
+      .uploading .progress-box .upload-progress {
+      }
+
+      .uploading .progress-box .upload-progress .progress-percent {
+        font-size: 12px;
+        font-weight: bold;
+        text-align: center;
+      }
+
+      .uploading .progress-box .upload-progress .progress {
+        height: 5px;
+        margin-bottom: 0;
+      }
+
+      .uploading .progress-box .upload-progress .progress-bar {
+        background: #10e922;
+      }
+
+    </style>
+
+    <div class="content-contain-content-course" style=" width:100%;">
+
+      <ul class="nav nav-tabs lms-tabs" role="tablist">
+        <li role="presentation" class="active">
+          <a href="#noidung" aria-controls="home" role="tab" data-toggle="tab">Nội dung</a></li>
+        <li role="presentation" id="caidatnangcao" style="display:none">
+          <a href="#caidat" aria-controls="profile" role="tab" data-toggle="tab">Tuỳ chọn nâng cao</a></li>
+      </ul>
+      <div class="tab-content lms-tab-content" id="FormAdd">
+
+        <div role="tabpanel" class="tab-pane active" id="noidung">
+          <%= form_for :lesson do |f| %>
+          <div class=" form-horizontal">
+            <div class="form-group">
+              <div class="col-lg-2">Tên bài học</div>
+              <div class="col-lg-10">
+                <%= f.text_field :name, class: 'form-control inputtext' %>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-lg-2">
+                Hoàn thành bài học khi
+              </div>
+              <div class="col-lg-10 form-inline">
+                <input name="rd" id="rd1" type="radio">
+                <label for="rd1" class="padingRradio">Click nút hoàn thành </label>
+                <input name="rd" id="rd2" type="radio">
+                <label for="rd2" class="padingRradio">Trả lời câu hỏi </label>
+                <input name="rd" id="rd3" type="radio">
+                <label for="rd3" class="padingRradio">Sau khoảng thời gian </label>
+
+              </div>
+            </div>
+            <div class="form-group" id="ShowInputTime" hidden="">
+              <div class="col-lg-2">
+                Khoảng thời gian
+              </div>
+              <div class="col-lg-10 form-inline">
+                <input onkeypress="return event.charCode > 48 &amp;&amp; event.charCode <= 57" style="width:100px;margin-left:0px!important" id="InputTime" class="margin-left margin-right inputcenter" maxlength="10" onkeyup="keyuperror(this.value, 'errorTG', 'errorTG', 'InputTime', '[name] không được để trống.'.replace('[name]', 'Khoảng thời gian'), ''.replace('[name]', 'Khoảng thời gian'))" type="text">
+                Phút
+              </div>
+              <div class="col-lg-2"></div>
+              <div class="col-lg-10">
+                <span id="errorTG" class="error-message pull-left" style="display: none;"></span>
+
+              </div>
+
+            </div>
+            <div id="ShowQuestionDIV" hidden="">
+              <div class="form-group">
+
+                <div id="ShowQuestion">
+
+                  <link href="/Content/Contents/css/AddTestModule.css" rel="stylesheet">
+                  <script src="/Content/Contents/js/AddTestModule.js"></script>
+                  <style>
+                    table thead {
+                      background: #0085ea;
+                      color: #fff;
+                      font-weight: bold;
+                      border: 1px solid #0085ea;
+                    }
+
+                    table tbody {
+                      border: 1px solid #ddd;
+                    }
+
+                    .center-inside {
+                      text-align: center !important;
+                    }
+
+                    td {
+                      text-overflow: ellipsis;
+                      overflow: hidden;
+                      white-space: nowrap;
+                    }
+                  </style>
+                  <div class="form-group">
+                    <label class="col-lg-2 control-label">Tạo mới</label>
+                    <div class="col-lg-10">
+                      <div class="btn-group" style="float:left">
+
+                        <button onclick="openWin('/Contents/CreateQuestionPopup/5865')" class="btn btn-add">Tạo câu
+                          hỏi
+                        </button>
+
+
+                        <button disabled="" type="button" class="btn btn-add dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <span class="caret"></span>
+                          <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a onclick="GetQuestionFromAllCourse()">Tải danh sách câu hỏi từ các khóa học cùng chủ
+                            đề</a></li>
+                          <li><a onclick="ShowCourseList()">Tải danh sách câu hỏi từ các chủ đề khác</a></li>
+                        </ul>
+                        <button class="btn btn-add" style="margin-left:5px" onclick="PreviewTest()">Xem trước</button>
+                      </div>
+                      <div id="loading" class="windows8">
+                        <div class="wBall" id="wBall_1">
+                          <div class="wInnerBall"></div>
+                        </div>
+                        <div class="wBall" id="wBall_2">
+                          <div class="wInnerBall"></div>
+                        </div>
+                        <div class="wBall" id="wBall_3">
+                          <div class="wInnerBall"></div>
+                        </div>
+                        <div class="wBall" id="wBall_4">
+                          <div class="wInnerBall"></div>
+                        </div>
+                        <div class="wBall" id="wBall_5">
+                          <div class="wInnerBall"></div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="row" style=" padding: 0 5%;">
+                    <div class="table-responsive">
+                      <div class="paginationContainer">
+                        <table class="table lms-table center-inside" id="QuestionList">
+                          <thead>
+                          <tr style="background: #0689ea; color: white; font-weight: bold">
+                            <th class="text-center col-md-1">Lựa chọn</th>
+                            <th class="text-center col-md-6">Nội dung câu hỏi</th>
+                            <th class="text-center col-md-3">Loại câu hỏi</th>
+                            <th class="text-center col-md-1 btn-group-3">Chức năng</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="CourseList" class="modal fade" tabindex="-1" role="dialog">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header" style="border-bottom: none;">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span></button>
+                          <h4 class="modal-title" style="text-align:center">Danh sách chủ đề</h4>
+                          <hr style="width: 80%; border-top: 1px solid #e4e4e4; margin-top: 10px; margin-bottom: 0">
+                        </div>
+                        <div class="modal-body">
+                          <div class="paginationContainer">
+                            <table class="table lms-table" id="TblCourseList">
+                              <thead>
+                              <tr>
+                                <td class="text-center btn-group-3 col-md-1"><input id="checkall" type="checkbox"></td>
+                                <td class="text-center">Danh sách chủ đề</td>
+                              </tr>
+                              </thead>
+                              <tbody>
+
+
+                              <tr onclick="SelectThisCourse(this)" class="CourseSelector paginationItemPage1" style="display: table-row;">
+                                <td class="text-center btn-group-3">
+                                  <input id="2892" class="CourseSelection" type="checkbox">
+                                </td>
+                                <td class="text-left">
+                                  test
+                                </td>
+                              </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-save btn-fixed-width" onclick="GetSelectedGroupCourse()">Chọn</button>
+                          <button type="button" class="btn btn-cancel btn-fixed-width" data-dismiss="modal">Hủy</button>
+                        </div>
+                      </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                  </div><!-- /.modal -->
+                  <div id="PreviewModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+                    <div class="modal-dialog modal-lg" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span></button>
+                          <h4 class="modal-title" style="text-align:center">Xem trước</h4>
+                        </div>
+                        <div class="modal-body">
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="form-group">
+                  <span id="errorQS" class="error-message pull-left" style="display: none; margin-left: 4%;"></span>
+
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-lg-2">Lựa chọn tài liệu</div>
+              <div class="col-lg-6">
+                <%= f.file_field :file %>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-md-12" id="ShowWating" style="text-align:center" hidden="">
+                <img src="/Content/Contents/images/ajax-loader.gif">
+              </div>
+            </div>
+
+            <div class="form-group" style="padding-left:4%;padding-right:2%">
+
+              <center id="ShowContentHtml"></center>
+
+            </div>
+            <div class="form-group" style="padding-left:4%;padding-right:2%">
+
+
+              <div class="col-md-12" id="ShowContent" style="display: none;">
+                <textarea id="inputContent" name="inputContent" style="visibility: hidden; display: none;"></textarea>
+                <div id="cke_inputContent" class="cke_1 cke cke_reset cke_chrome cke_editor_inputContent cke_ltr cke_browser_gecko" dir="ltr" role="application" aria-labelledby="cke_inputContent_arialbl" lang="vi">
+                  <span id="cke_inputContent_arialbl" class="cke_voice_label">Bộ soạn thảo văn bản có định dạng, inputContent</span>
+                  <div class="cke_inner cke_reset" role="presentation">
+                    <span id="cke_1_top" class="cke_top cke_reset_all" role="presentation" style="height: auto; -moz-user-select: none;"><span id="cke_9" class="cke_voice_label">Thanh công cụ</span><span id="cke_1_toolbox" class="cke_toolbox" role="group" aria-labelledby="cke_9" onmousedown="return false;"><span id="cke_14" class="cke_toolbar" aria-labelledby="cke_14_label" role="toolbar"><span id="cke_14_label" class="cke_voice_label">Clipboard/Undo</span><span class="cke_toolbar_start"></span><span class="cke_toolgroup" role="presentation"><a id="cke_15" class="cke_button cke_button__cut cke_button_disabled " title="Cắt" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_15_label" aria-haspopup="false" aria-disabled="true" onblur="this.style.cssText = this.style.cssText;" onkeydown="return CKEDITOR.tools.callFunction(2,event);" onfocus="return CKEDITOR.tools.callFunction(3,event);" onclick="CKEDITOR.tools.callFunction(4,this);return false;"><span class="cke_button_icon cke_button__cut_icon" style="background-image:url('https://anphat.cls.vn/Content/Contents/js/ckeditor/plugins/icons.png?t=G6DE');background-position:0 -312px;background-size:auto;">&nbsp;</span><span id="cke_15_label" class="cke_button_label cke_button__cut_label" aria-hidden="false">Cắt</span></a><a id="cke_16" class="cke_button cke_button__copy cke_button_disabled " title="Sao chép" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_16_label" aria-haspopup="false" aria-disabled="true" onblur="this.style.cssText = this.style.cssText;" onkeydown="return CKEDITOR.tools.callFunction(5,event);" onfocus="return CKEDITOR.tools.callFunction(6,event);" onclick="CKEDITOR.tools.callFunction(7,this);return false;"><span class="cke_button_icon cke_button__copy_icon" style="background-image:url('https://anphat.cls.vn/Content/Contents/js/ckeditor/plugins/icons.png?t=G6DE');background-position:0 -264px;background-size:auto;">&nbsp;</span><span id="cke_16_label" class="cke_button_label cke_button__copy_label" aria-hidden="false">Sao chép</span></a><a id="cke_17" class="cke_button cke_button__paste cke_button_off" title="Dán" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_17_label" aria-haspopup="false" onblur="this.style.cssText = this.style.cssText;" onkeydown="return CKEDITOR.tools.callFunction(8,event);" onfocus="return CKEDITOR.tools.callFunction(9,event);" onclick="CKEDITOR.tools.callFunction(10,this);return false;"><span class="cke_button_icon cke_button__paste_icon" style="background-image:url('https://anphat.cls.vn/Content/Contents/js/ckeditor/plugins/icons.png?t=G6DE');background-position:0 -360px;background-size:auto;">&nbsp;</span><span id="cke_17_label" class="cke_button_label cke_button__paste_label" aria-hidden="false">Dán</span></a><a id="cke_18" class="cke_button cke_button__pastetext cke_button_off" title="Dán theo định dạng văn bản thuần" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_18_label" aria-haspopup="false" onblur="this.style.cssText = this.style.cssText;" onkeydown="return CKEDITOR.tools.callFunction(11,event);" onfocus="return CKEDITOR.tools.callFunction(12,event);" onclick="CKEDITOR.tools.callFunction(13,this);return false;"><span class="cke_button_icon cke_button__pastetext_icon" style="background-image:url('https://anphat.cls.vn/Content/Contents/js/ckeditor/plugins/icons.png?t=G6DE');background-position:0 -1536px;background-size:auto;">&nbsp;</span><span id="cke_18_label" class="cke_button_label cke_button__pastetext_label" aria-hidden="false">Dán theo định dạng văn bản thuần</span></a><a id="cke_19" class="cke_button cke_button__pastefromword cke_button_off" title="Dán với định dạng Word" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_19_label" aria-haspopup="false" onblur="this.style.cssText = this.style.cssText;" onkeydown="return CKEDITOR.tools.callFunction(14,event);" onfocus="return CKEDITOR.tools.callFunction(15,event);" onclick="CKEDITOR.tools.callFunction(16,this);return false;"><span class="cke_button_icon cke_button__pastefromword_icon" style="background-image:url('https://anphat.cls.vn/Content/Contents/js/ckeditor/plugins/icons.png?t=G6DE');background-position:0 -1584px;background-size:auto;">&nbsp;</span><span id="cke_19_label" class="cke_button_label cke_button__pastefromword_label" aria-hidden="false">Dán với định dạng Word</span></a><span class="cke_toolbar_separator" role="separator"></span><a id="cke_20" class="cke_button cke_button__undo cke_button_disabled " title="Khôi phục thao tác" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_20_label" aria-haspopup="false" aria-disabled="true" onblur="this.style.cssText = this.style.cssText;" onkeydown="return CKEDITOR.tools.callFunction(17,event);" onfocus="return CKEDITOR.tools.callFunction(18,event);" onclick="CKEDITOR.tools.callFunction(19,this);return false;"><span class="cke_button_icon cke_button__undo_icon" style="background-image:url('https://anphat.cls.vn/Content/Contents/js/ckeditor/plugins/icons.png?t=G6DE');background-position:0 -1992px;background-size:auto;">&nbsp;</span><span id="cke_20_label" class="cke_button_label cke_button__undo_label" aria-hidden="false">Khôi phục thao tác</span></a><a id="cke_21" class="cke_button cke_button__redo cke_button_disabled " title="Làm lại thao tác" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_21_label" aria-haspopup="false" aria-disabled="true" onblur="this.style.cssText = this.style.cssText;" onkeydown="return CKEDITOR.tools.callFunction(20,event);" onfocus="return CKEDITOR.tools.callFunction(21,event);" onclick="CKEDITOR.tools.callFunction(22,this);return false;"><span class="cke_button_icon cke_button__redo_icon" style="background-image:url('https://anphat.cls.vn/Content/Contents/js/ckeditor/plugins/icons.png?t=G6DE');background-position:0 -1944px;background-size:auto;">&nbsp;</span><span id="cke_21_label" class="cke_button_label cke_button__redo_label" aria-hidden="false">Làm lại thao tác</span></a></span><span class="cke_toolbar_end"></span></span><span id="cke_22" class="cke_toolbar" aria-labelledby="cke_22_label" role="toolbar"><span id="cke_22_label" class="cke_voice_label">Chỉnh sửa</span><span class="cke_toolbar_start"></span><span class="cke_toolgroup" role="presentation"><a id="cke_23" class="cke_button cke_button__scayt cke_button_off" title="Kiểm tra chính tả" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_23_label" aria-haspopup="true" onblur="this.style.cssText = this.style.cssText;" onkeydown="return CKEDITOR.tools.callFunction(23,event);" onfocus="return CKEDITOR.tools.callFunction(24,event);" onclick="CKEDITOR.tools.callFunction(25,this);return false;"><span class="cke_button_icon cke_button__scayt_icon" style="background-image:url('https://anphat.cls.vn/Content/Contents/js/ckeditor/plugins/icons.png?t=G6DE');background-position:0 -1872px;background-size:auto;">&nbsp;</span><span id="cke_23_label" class="cke_button_label cke_button__scayt_label" aria-hidden="false">Kiểm tra chính tả ngay khi gõ chữ (SCAYT)</span><span class="cke_button_arrow"></span></a></span><span class="cke_toolbar_end"></span></span><span id="cke_24" class="cke_toolbar" aria-labelledby="cke_24_label" role="toolbar"><span id="cke_24_label" class="cke_voice_label">Liên kết</span><span class="cke_toolbar_start"></span><span class="cke_toolgroup" role="presentation"><a id="cke_25" class="cke_button cke_button__link cke_button_off" title="Chèn/Sửa liên kết" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_25_label" aria-haspopup="false" onblur="this.style.cssText = this.style.cssText;" onkeydown="return CKEDITOR.tools.callFunction(26,event);" onfocus="return CKEDITOR.tools.callFunction(27,event);" onclick="CKEDITOR.tools.callFunction(28,this);return false;"><span class="cke_button_icon cke_button__link_icon" style="background-image:url('https://anphat.cls.vn/Content/Contents/js/ckeditor/plugins/icons.png?t=G6DE');background-position:0 -1248px;background-size:auto;">&nbsp;</span><span id="cke_25_label" class="cke_button_label cke_button__link_label" aria-hidden="false">Chèn/Sửa liên kết</span></a><a id="cke_26" class="cke_button cke_button__unlink cke_button_disabled " title="Xoá liên kết" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_26_label" aria-haspopup="false" aria-disabled="true" onblur="this.style.cssText = this.style.cssText;" onkeydown="return CKEDITOR.tools.callFunction(29,event);" onfocus="return CKEDITOR.tools.callFunction(30,event);" onclick="CKEDITOR.tools.callFunction(31,this);return false;"><span class="cke_button_icon cke_button__unlink_icon" style="background-image:url('https://anphat.cls.vn/Content/Contents/js/ckeditor/plugins/icons.png?t=G6DE');background-position:0 -1272px;background-size:auto;">&nbsp;</span><span id="cke_26_label" class="cke_button_label cke_button__unlink_label" aria-hidden="false">Xoá liên kết</span></a><a id="cke_27" class="cke_button cke_button__anchor cke_button_off" title="Chèn/Sửa điểm neo" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_27_label" aria-haspopup="false" onblur="this.style.cssText = this.style.cssText;" onkeydown="return CKEDITOR.tools.callFunction(32,event);" onfocus="return CKEDITOR.tools.callFunction(33,event);" onclick="CKEDITOR.tools.callFunction(34,this);return false;"><span class="cke_button_icon cke_button__anchor_icon" style="background-image:url('https://anphat.cls.vn/Content/Contents/js/ckeditor/plugins/icons.png?t=G6DE');background-position:0 -1224px;background-size:auto;">&nbsp;</span><span id="cke_27_label" class="cke_button_label cke_button__anchor_label" aria-hidden="false">Chèn/Sửa điểm neo</span></a></span><span class="cke_toolbar_end"></span></span><span id="cke_28" class="cke_toolbar" aria-labelledby="cke_28_label" role="toolbar"><span id="cke_28_label" class="cke_voice_label">Chèn</span><span class="cke_toolbar_start"></span><span class="cke_toolgroup" role="presentation"><a id="cke_29" class="cke_button cke_button__image cke_button_off" title="Hình ảnh" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_29_label" aria-haspopup="false" onblur="this.style.cssText = this.style.cssText;" onkeydown="return CKEDITOR.tools.callFunction(35,event);" onfocus="return CKEDITOR.tools.callFunction(36,event);" onclick="CKEDITOR.tools.callFunction(37,this);return false;"><span class="cke_button_icon cke_button__image_icon" style="background-image:url('https://anphat.cls.vn/Content/Contents/js/ckeditor/plugins/icons.png?t=G6DE');background-position:0 -936px;background-size:auto;">&nbsp;</span><span id="cke_29_label" class="cke_button_label cke_button__image_label" aria-hidden="false">Hình ảnh</span></a><a id="cke_30" class="cke_button cke_button__table cke_button_off" title="Bảng" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_30_label" aria-haspopup="false" onblur="this.style.cssText = this.style.cssText;" onkeydown="return CKEDITOR.tools.callFunction(38,event);" onfocus="return CKEDITOR.tools.callFunction(39,event);" onclick="CKEDITOR.tools.callFunction(40,this);return false;"><span class="cke_button_icon cke_button__table_icon" style="background-image:url('https://anphat.cls.vn/Content/Contents/js/ckeditor/plugins/icons.png?t=G6DE');background-position:0 -1896px;background-size:auto;">&nbsp;</span><span id="cke_30_label" class="cke_button_label cke_button__table_label" aria-hidden="false">Bảng</span></a><a id="cke_31" class="cke_button cke_button__horizontalrule cke_button_off" title="Chèn đường phân cách ngang" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_31_label" aria-haspopup="false" onblur="this.style.cssText = this.style.cssText;" onkeydown="return CKEDITOR.tools.callFunction(41,event);" onfocus="return CKEDITOR.tools.callFunction(42,event);" onclick="CKEDITOR.tools.callFunction(43,this);return false;"><span class="cke_button_icon cke_button__horizontalrule_icon" style="background-image:url('https://anphat.cls.vn/Content/Contents/js/ckeditor/plugins/icons.png?t=G6DE');background-position:0 -888px;background-size:auto;">&nbsp;</span><span id="cke_31_label" class="cke_button_label cke_button__horizontalrule_label" aria-hidden="false">Chèn đường phân cách ngang</span></a><a id="cke_32" class="cke_button cke_button__specialchar cke_button_off" title="Chèn ký tự đặc biệt" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_32_label" aria-haspopup="false" onblur="this.style.cssText = this.style.cssText;" onkeydown="return CKEDITOR.tools.callFunction(44,event);" onfocus="return CKEDITOR.tools.callFunction(45,event);" onclick="CKEDITOR.tools.callFunction(46,this);return false;"><span class="cke_button_icon cke_button__specialchar_icon" style="background-image:url('https://anphat.cls.vn/Content/Contents/js/ckeditor/plugins/icons.png?t=G6DE');background-position:0 -1848px;background-size:auto;">&nbsp;</span><span id="cke_32_label" class="cke_button_label cke_button__specialchar_label" aria-hidden="false">Chèn ký tự đặc biệt</span></a></span><span class="cke_toolbar_end"></span></span><span id="cke_33" class="cke_toolbar" aria-labelledby="cke_33_label" role="toolbar"><span id="cke_33_label" class="cke_voice_label">Công cụ</span><span class="cke_toolbar_start"></span><span class="cke_toolgroup" role="presentation"><a id="cke_34" class="cke_button cke_button__maximize cke_button_off" title="Phóng to tối đa" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_34_label" aria-haspopup="false" onblur="this.style.cssText = this.style.cssText;" onkeydown="return CKEDITOR.tools.callFunction(47,event);" onfocus="return CKEDITOR.tools.callFunction(48,event);" onclick="CKEDITOR.tools.callFunction(49,this);return false;"><span class="cke_button_icon cke_button__maximize_icon" style="background-image:url('https://anphat.cls.vn/Content/Contents/js/ckeditor/plugins/icons.png?t=G6DE');background-position:0 -1392px;background-size:auto;">&nbsp;</span><span id="cke_34_label" class="cke_button_label cke_button__maximize_label" aria-hidden="false">Phóng to tối đa</span></a></span><span class="cke_toolbar_end"></span></span><span class="cke_toolbar_break"></span><span id="cke_35" class="cke_toolbar" aria-labelledby="cke_35_label" role="toolbar"><span id="cke_35_label" class="cke_voice_label">Kiểu cơ bản</span><span class="cke_toolbar_start"></span><span class="cke_toolgroup" role="presentation"><a id="cke_36" class="cke_button cke_button__bold cke_button_off" title="Đậm" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_36_label" aria-haspopup="false" onblur="this.style.cssText = this.style.cssText;" onkeydown="return CKEDITOR.tools.callFunction(50,event);" onfocus="return CKEDITOR.tools.callFunction(51,event);" onclick="CKEDITOR.tools.callFunction(52,this);return false;"><span class="cke_button_icon cke_button__bold_icon" style="background-image:url('https://anphat.cls.vn/Content/Contents/js/ckeditor/plugins/icons.png?t=G6DE');background-position:0 -24px;background-size:auto;">&nbsp;</span><span id="cke_36_label" class="cke_button_label cke_button__bold_label" aria-hidden="false">Đậm</span></a><a id="cke_37" class="cke_button cke_button__italic cke_button_off" title="Nghiêng" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_37_label" aria-haspopup="false" onblur="this.style.cssText = this.style.cssText;" onkeydown="return CKEDITOR.tools.callFunction(53,event);" onfocus="return CKEDITOR.tools.callFunction(54,event);" onclick="CKEDITOR.tools.callFunction(55,this);return false;"><span class="cke_button_icon cke_button__italic_icon" style="background-image:url('https://anphat.cls.vn/Content/Contents/js/ckeditor/plugins/icons.png?t=G6DE');background-position:0 -48px;background-size:auto;">&nbsp;</span><span id="cke_37_label" class="cke_button_label cke_button__italic_label" aria-hidden="false">Nghiêng</span></a><a id="cke_38" class="cke_button cke_button__strike cke_button_off" title="Gạch xuyên ngang" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_38_label" aria-haspopup="false" onblur="this.style.cssText = this.style.cssText;" onkeydown="return CKEDITOR.tools.callFunction(56,event);" onfocus="return CKEDITOR.tools.callFunction(57,event);" onclick="CKEDITOR.tools.callFunction(58,this);return false;"><span class="cke_button_icon cke_button__strike_icon" style="background-image:url('https://anphat.cls.vn/Content/Contents/js/ckeditor/plugins/icons.png?t=G6DE');background-position:0 -72px;background-size:auto;">&nbsp;</span><span id="cke_38_label" class="cke_button_label cke_button__strike_label" aria-hidden="false">Gạch xuyên ngang</span></a><span class="cke_toolbar_separator" role="separator"></span><a id="cke_39" class="cke_button cke_button__removeformat cke_button_off" title="Xoá định dạng" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_39_label" aria-haspopup="false" onblur="this.style.cssText = this.style.cssText;" onkeydown="return CKEDITOR.tools.callFunction(59,event);" onfocus="return CKEDITOR.tools.callFunction(60,event);" onclick="CKEDITOR.tools.callFunction(61,this);return false;"><span class="cke_button_icon cke_button__removeformat_icon" style="background-image:url('https://anphat.cls.vn/Content/Contents/js/ckeditor/plugins/icons.png?t=G6DE');background-position:0 -1680px;background-size:auto;">&nbsp;</span><span id="cke_39_label" class="cke_button_label cke_button__removeformat_label" aria-hidden="false">Xoá định dạng</span></a></span><span class="cke_toolbar_end"></span></span><span id="cke_40" class="cke_toolbar" aria-labelledby="cke_40_label" role="toolbar"><span id="cke_40_label" class="cke_voice_label">Đoạn</span><span class="cke_toolbar_start"></span><span class="cke_toolgroup" role="presentation"><a id="cke_41" class="cke_button cke_button__numberedlist cke_button_off" title="Chèn/Xoá Danh sách có thứ tự" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_41_label" aria-haspopup="false" onblur="this.style.cssText = this.style.cssText;" onkeydown="return CKEDITOR.tools.callFunction(62,event);" onfocus="return CKEDITOR.tools.callFunction(63,event);" onclick="CKEDITOR.tools.callFunction(64,this);return false;"><span class="cke_button_icon cke_button__numberedlist_icon" style="background-image:url('https://anphat.cls.vn/Content/Contents/js/ckeditor/plugins/icons.png?t=G6DE');background-position:0 -1368px;background-size:auto;">&nbsp;</span><span id="cke_41_label" class="cke_button_label cke_button__numberedlist_label" aria-hidden="false">Chèn/Xoá Danh sách có thứ tự</span></a><a id="cke_42" class="cke_button cke_button__bulletedlist cke_button_off" title="Chèn/Xoá Danh sách không thứ tự" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_42_label" aria-haspopup="false" onblur="this.style.cssText = this.style.cssText;" onkeydown="return CKEDITOR.tools.callFunction(65,event);" onfocus="return CKEDITOR.tools.callFunction(66,event);" onclick="CKEDITOR.tools.callFunction(67,this);return false;"><span class="cke_button_icon cke_button__bulletedlist_icon" style="background-image:url('https://anphat.cls.vn/Content/Contents/js/ckeditor/plugins/icons.png?t=G6DE');background-position:0 -1320px;background-size:auto;">&nbsp;</span><span id="cke_42_label" class="cke_button_label cke_button__bulletedlist_label" aria-hidden="false">Chèn/Xoá Danh sách không thứ tự</span></a><span class="cke_toolbar_separator" role="separator"></span><a id="cke_43" class="cke_button cke_button__outdent cke_button_disabled " title="Dịch ra ngoài" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_43_label" aria-haspopup="false" aria-disabled="true" onblur="this.style.cssText = this.style.cssText;" onkeydown="return CKEDITOR.tools.callFunction(68,event);" onfocus="return CKEDITOR.tools.callFunction(69,event);" onclick="CKEDITOR.tools.callFunction(70,this);return false;"><span class="cke_button_icon cke_button__outdent_icon" style="background-image:url('https://anphat.cls.vn/Content/Contents/js/ckeditor/plugins/icons.png?t=G6DE');background-position:0 -1032px;background-size:auto;">&nbsp;</span><span id="cke_43_label" class="cke_button_label cke_button__outdent_label" aria-hidden="false">Dịch ra ngoài</span></a><a id="cke_44" class="cke_button cke_button__indent cke_button_off" title="Dịch vào trong" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_44_label" aria-haspopup="false" onblur="this.style.cssText = this.style.cssText;" onkeydown="return CKEDITOR.tools.callFunction(71,event);" onfocus="return CKEDITOR.tools.callFunction(72,event);" onclick="CKEDITOR.tools.callFunction(73,this);return false;"><span class="cke_button_icon cke_button__indent_icon" style="background-image:url('https://anphat.cls.vn/Content/Contents/js/ckeditor/plugins/icons.png?t=G6DE');background-position:0 -984px;background-size:auto;">&nbsp;</span><span id="cke_44_label" class="cke_button_label cke_button__indent_label" aria-hidden="false">Dịch vào trong</span></a><span class="cke_toolbar_separator" role="separator"></span><a id="cke_45" class="cke_button cke_button__blockquote cke_button_off" title="Khối trích dẫn" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_45_label" aria-haspopup="false" onblur="this.style.cssText = this.style.cssText;" onkeydown="return CKEDITOR.tools.callFunction(74,event);" onfocus="return CKEDITOR.tools.callFunction(75,event);" onclick="CKEDITOR.tools.callFunction(76,this);return false;"><span class="cke_button_icon cke_button__blockquote_icon" style="background-image:url('https://anphat.cls.vn/Content/Contents/js/ckeditor/plugins/icons.png?t=G6DE');background-position:0 -216px;background-size:auto;">&nbsp;</span><span id="cke_45_label" class="cke_button_label cke_button__blockquote_label" aria-hidden="false">Khối trích dẫn</span></a></span><span class="cke_toolbar_end"></span></span><span id="cke_46" class="cke_toolbar" aria-labelledby="cke_46_label" role="toolbar"><span id="cke_46_label" class="cke_voice_label">Kiểu</span><span class="cke_toolbar_start"></span><span id="cke_10" class="cke_combo cke_combo__styles cke_combo_off" role="presentation"><span id="cke_10_label" class="cke_combo_label">Kiểu</span><a class="cke_combo_button" title="Phong cách định dạng" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_10_label" aria-haspopup="true" onblur="this.style.cssText = this.style.cssText;" onkeydown="return CKEDITOR.tools.callFunction(78,event,this);" onfocus="return CKEDITOR.tools.callFunction(79,event);" onclick="CKEDITOR.tools.callFunction(77,this);return false;"><span id="cke_10_text" class="cke_combo_text cke_combo_inlinelabel">Kiểu</span><span class="cke_combo_open"><span class="cke_combo_arrow"></span></span></a></span><span id="cke_11" class="cke_combo cke_combo__format cke_combo_off" role="presentation"><span id="cke_11_label" class="cke_combo_label">Định dạng</span><a class="cke_combo_button" title="Định dạng" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_11_label" aria-haspopup="true" onblur="this.style.cssText = this.style.cssText;" onkeydown="return CKEDITOR.tools.callFunction(81,event,this);" onfocus="return CKEDITOR.tools.callFunction(82,event);" onclick="CKEDITOR.tools.callFunction(80,this);return false;"><span id="cke_11_text" class="cke_combo_text cke_combo_inlinelabel">Định dạng</span><span class="cke_combo_open"><span class="cke_combo_arrow"></span></span></a></span><span id="cke_12" class="cke_combo cke_combo__font cke_combo_off" role="presentation"><span id="cke_12_label" class="cke_combo_label">Phông</span><a class="cke_combo_button" title="Phông" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_12_label" aria-haspopup="true" onblur="this.style.cssText = this.style.cssText;" onkeydown="return CKEDITOR.tools.callFunction(84,event,this);" onfocus="return CKEDITOR.tools.callFunction(85,event);" onclick="CKEDITOR.tools.callFunction(83,this);return false;"><span id="cke_12_text" class="cke_combo_text cke_combo_inlinelabel">Phông</span><span class="cke_combo_open"><span class="cke_combo_arrow"></span></span></a></span><span id="cke_13" class="cke_combo cke_combo__fontsize cke_combo_off" role="presentation"><span id="cke_13_label" class="cke_combo_label">Cỡ chữ</span><a class="cke_combo_button" title="Cỡ chữ" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_13_label" aria-haspopup="true" onblur="this.style.cssText = this.style.cssText;" onkeydown="return CKEDITOR.tools.callFunction(87,event,this);" onfocus="return CKEDITOR.tools.callFunction(88,event);" onclick="CKEDITOR.tools.callFunction(86,this);return false;"><span id="cke_13_text" class="cke_combo_text cke_combo_inlinelabel">Cỡ chữ</span><span class="cke_combo_open"><span class="cke_combo_arrow"></span></span></a></span><span class="cke_toolbar_end"></span></span><span id="cke_47" class="cke_toolbar" aria-labelledby="cke_47_label" role="toolbar"><span id="cke_47_label" class="cke_voice_label">Màu sắc</span><span class="cke_toolbar_start"></span><span class="cke_toolgroup" role="presentation"><a id="cke_48" class="cke_button cke_button__textcolor cke_button_off" title="Màu chữ" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_48_label" aria-haspopup="true" onblur="this.style.cssText = this.style.cssText;" onkeydown="return CKEDITOR.tools.callFunction(89,event);" onfocus="return CKEDITOR.tools.callFunction(90,event);" onclick="CKEDITOR.tools.callFunction(91,this);return false;"><span class="cke_button_icon cke_button__textcolor_icon" style="background-image:url('https://anphat.cls.vn/Content/Contents/js/ckeditor/plugins/icons.png?t=G6DE');background-position:0 -408px;background-size:auto;">&nbsp;</span><span id="cke_48_label" class="cke_button_label cke_button__textcolor_label" aria-hidden="false">Màu chữ</span><span class="cke_button_arrow"></span></a><a id="cke_49" class="cke_button cke_button__bgcolor cke_button_off" title="Màu nền" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_49_label" aria-haspopup="true" onblur="this.style.cssText = this.style.cssText;" onkeydown="return CKEDITOR.tools.callFunction(92,event);" onfocus="return CKEDITOR.tools.callFunction(93,event);" onclick="CKEDITOR.tools.callFunction(94,this);return false;"><span class="cke_button_icon cke_button__bgcolor_icon" style="background-image:url('https://anphat.cls.vn/Content/Contents/js/ckeditor/plugins/icons.png?t=G6DE');background-position:0 -384px;background-size:auto;">&nbsp;</span><span id="cke_49_label" class="cke_button_label cke_button__bgcolor_label" aria-hidden="false">Màu nền</span><span class="cke_button_arrow"></span></a></span><span class="cke_toolbar_end"></span></span><span id="cke_50" class="cke_toolbar" aria-labelledby="cke_50_label" role="toolbar"><span id="cke_50_label" class="cke_voice_label">Đoạn</span><span class="cke_toolbar_start"></span><span class="cke_toolgroup" role="presentation"><a id="cke_51" class="cke_button cke_button__justifyleft cke_button_off" title="Canh trái" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_51_label" aria-haspopup="false" onblur="this.style.cssText = this.style.cssText;" onkeydown="return CKEDITOR.tools.callFunction(95,event);" onfocus="return CKEDITOR.tools.callFunction(96,event);" onclick="CKEDITOR.tools.callFunction(97,this);return false;"><span class="cke_button_icon cke_button__justifyleft_icon" style="background-image:url('https://anphat.cls.vn/Content/Contents/js/ckeditor/plugins/icons.png?t=G6DE');background-position:0 -1128px;background-size:auto;">&nbsp;</span><span id="cke_51_label" class="cke_button_label cke_button__justifyleft_label" aria-hidden="false">Canh trái</span></a><a id="cke_52" class="cke_button cke_button__justifycenter cke_button_off" title="Canh giữa" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_52_label" aria-haspopup="false" onblur="this.style.cssText = this.style.cssText;" onkeydown="return CKEDITOR.tools.callFunction(98,event);" onfocus="return CKEDITOR.tools.callFunction(99,event);" onclick="CKEDITOR.tools.callFunction(100,this);return false;"><span class="cke_button_icon cke_button__justifycenter_icon" style="background-image:url('https://anphat.cls.vn/Content/Contents/js/ckeditor/plugins/icons.png?t=G6DE');background-position:0 -1104px;background-size:auto;">&nbsp;</span><span id="cke_52_label" class="cke_button_label cke_button__justifycenter_label" aria-hidden="false">Canh giữa</span></a><a id="cke_53" class="cke_button cke_button__justifyright cke_button_off" title="Canh phải" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_53_label" aria-haspopup="false" onblur="this.style.cssText = this.style.cssText;" onkeydown="return CKEDITOR.tools.callFunction(101,event);" onfocus="return CKEDITOR.tools.callFunction(102,event);" onclick="CKEDITOR.tools.callFunction(103,this);return false;"><span class="cke_button_icon cke_button__justifyright_icon" style="background-image:url('https://anphat.cls.vn/Content/Contents/js/ckeditor/plugins/icons.png?t=G6DE');background-position:0 -1152px;background-size:auto;">&nbsp;</span><span id="cke_53_label" class="cke_button_label cke_button__justifyright_label" aria-hidden="false">Canh phải</span></a><a id="cke_54" class="cke_button cke_button__justifyblock cke_button_off" title="Canh đều" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_54_label" aria-haspopup="false" onblur="this.style.cssText = this.style.cssText;" onkeydown="return CKEDITOR.tools.callFunction(104,event);" onfocus="return CKEDITOR.tools.callFunction(105,event);" onclick="CKEDITOR.tools.callFunction(106,this);return false;"><span class="cke_button_icon cke_button__justifyblock_icon" style="background-image:url('https://anphat.cls.vn/Content/Contents/js/ckeditor/plugins/icons.png?t=G6DE');background-position:0 -1080px;background-size:auto;">&nbsp;</span><span id="cke_54_label" class="cke_button_label cke_button__justifyblock_label" aria-hidden="false">Canh đều</span></a></span><span class="cke_toolbar_end"></span></span><span id="cke_55" class="cke_toolbar" aria-labelledby="cke_55_label" role="toolbar"><span id="cke_55_label" class="cke_voice_label">about</span><span class="cke_toolbar_start"></span><span class="cke_toolgroup" role="presentation"><a id="cke_56" class="cke_button cke_button__about cke_button_off" title="Thông tin về CKEditor" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_56_label" aria-haspopup="false" onblur="this.style.cssText = this.style.cssText;" onkeydown="return CKEDITOR.tools.callFunction(107,event);" onfocus="return CKEDITOR.tools.callFunction(108,event);" onclick="CKEDITOR.tools.callFunction(109,this);return false;"><span class="cke_button_icon cke_button__about_icon" style="background-image:url('https://anphat.cls.vn/Content/Contents/js/ckeditor/plugins/icons.png?t=G6DE');background-position:0 0px;background-size:auto;">&nbsp;</span><span id="cke_56_label" class="cke_button_label cke_button__about_label" aria-hidden="false">Thông tin về CKEditor</span></a></span><span class="cke_toolbar_end"></span></span></span></span>
+                    <div id="cke_1_contents" class="cke_contents cke_reset" role="presentation" style="height: 500px;">
+                      <span id="cke_61" class="cke_voice_label">Nhấn ALT + 0 để được giúp đỡ</span>
+                      <iframe src="" style="width: 100%; height: 100%;" class="cke_wysiwyg_frame cke_reset" title="Bộ soạn thảo văn bản có định dạng, inputContent" aria-describedby="cke_61" tabindex="0" allowtransparency="true" frameborder="0"></iframe>
+                    </div>
+                    <span id="cke_1_bottom" class="cke_bottom cke_reset_all" role="presentation" style="-moz-user-select: none;"><span id="cke_1_resizer" class="cke_resizer cke_resizer_vertical cke_resizer_ltr" title="Kéo rê để thay đổi kích cỡ" onmousedown="CKEDITOR.tools.callFunction(0, event)">◢</span><span id="cke_1_path_label" class="cke_voice_label">Nhãn thành phần</span><span id="cke_1_path" class="cke_path" role="group" aria-labelledby="cke_1_path_label"><span class="cke_path_empty">&nbsp;</span></span></span>
+                  </div>
+                </div>
+
+              </div>
+              <div class="col-md-12" style="width:100%;">
+                <span id="errorND" class="error-message pull-left" style="display:none"></span>
+              </div>
+
+            </div>
+
+
+            <div class="form-group">
+              <div class="col-md-12">
+                <label id="errorMS" style="color:#ff0000"></label>
+              </div>
+            </div>
+            <div class="form-group" style="text-align:center">
+              <div class="button-action-group">
+                <%= f.submit 'Lưu', class: 'btn btn-save btn-fixed-width' %>
+                <div class="btn btn-cancel btn-fixed-width" onclick="redirectTo('/Contents/Index/5865')">Hủy</div>
+              </div>
+            </div>
+            <div id="show1" hidden="">
+            </div>
+
+          </div>
+          <% end %>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="caidat">
+          <form>
+            <div class="checkbox" style="display:none">
+              <label>
+                <input id="CheckPriceContent" type="checkbox">
+                Giá bài học
+                <span id="showpr" hidden=""><input onkeypress="return event.charCode >= 48 &amp;&amp; event.charCode <= 57" id="PriceContent" style="width:100px" class="margin-left margin-right inputcenter" maxlength="18" onkeyup="keyuperror(this.value, 'errorGia', 'errorGia', 'PriceContent', 'Nhập giá của nội dung')" type="text"> VNĐ</span>
+                <span id="errorGia" style="color:red;margin-left:15px" hidden=""></span>
+              </label>
+            </div>
+            <div id="ShowOptionQuestion" hidden="">
+              <div class="form-group" style="display:none">
+                <label>
+                  <b>Tùy chọn cho danh sách câu hỏi trong bài học</b>
+                </label>
+              </div>
+              <div class="form-group" style="display:none">
+                Hoàn thành bài học khi trả lời
+                <input onkeypress="return event.charCode >= 48 &amp;&amp; event.charCode <= 57" style="width:50px;" id="PhanTramHoanThanh" class="margin-left margin-right inputcenter" maxlength="10" value="100" onkeyup="    keyuperror(this.value, 'errorPT', 'errorPT', 'PhanTramHoanThanh', 'Nhập mục phần trăm hoàn thành'); this.value = minmaxAll(this.value,0,100)" type="text">
+                % câu hỏi trong bài học
+                <span id="errorPT" style="color:red;margin-left:15px" hidden=""></span>
+              </div>
+
+              <div class="checkbox" style="display:none">
+                <label>
+                  <input id="CheckThucHienLai" checked="" type="checkbox">
+                  Cho phép thực hiện lại khi không hoàn thành
+                </label>
+              </div>
+              <div class="checkbox" id="divsolanthuchien" style="padding-left: 20px; display: none">
+                <label>
+                  <input id="Checksolanthuchien" type="checkbox">
+                  Số lần thực hiện lại
+                  <span id="showsl" hidden=""><input onkeypress="return event.charCode >= 48 &amp;&amp; event.charCode <= 57" id="solanthuchien" style="width:100px" class="margin-left margin-right inputcenter" maxlength="18" onkeyup="    keyuperror(this.value, 'errorsolan', 'errorsolan', 'solanthuchien', 'Nhập số lần thực hiện lại')" type="text"></span>
+                  <span id="errorsolan" style="color:red;margin-left:15px" hidden=""></span>
+                </label>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input id="CheckXaoTronCH" type="checkbox">
+                  Xáo trộn câu hỏi
+                </label>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input id="CheckChonNgauNhien" type="checkbox">
+                  Lựa chọn ngẫu nhiên
+                  <input disabled="" onkeypress="return event.charCode >= 48 &amp;&amp; event.charCode <= 57" maxlength="10" id="ChonNgauNhien" style="width:50px;" class="margin-left margin-right inputcenter" type="text"><span id="countCH"></span>
+                  trong danh sách
+
+                  &nbsp; <span id="errorNN" class="error-message pull-right" style="display:none"></span>
+                </label>
+              </div>
+              <div hidden="">
+                <div class="form-group">
+                  Cách hiển thị câu hỏi
+                </div>
+                <div class="radio">
+                  <label>
+                    <input name="rdHienThiCH" id="rdHTToanBo" checked="" type="radio">
+                    Hiển thị toàn bộ danh sách câu hỏi cho người dùng trả lời
+                  </label>
+                </div>
+                <div class="radio">
+                  <label>
+                    <input name="rdHienThiCH" id="rdHTTungCauCo1DA" type="radio">
+                    Hiển thị từng câu hỏi, cho phép được tiếp tục trả lời khi có 1 đáp án được chọn
+                  </label>
+                </div>
+                <div class="radio">
+                  <label>
+                    <input name="rdHienThiCH" id="rdHTTungCauTLS" type="radio">
+                    Hiển thị từng câu hỏi, khi người dùng trả lời sai sẽ thông báo và cho phép người dùng trả lời lại
+                    câu hỏi
+                  </label>
+                </div>
+
+              </div>
+
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="uploading" id="uploadProgress">
+      <div class="progress-box">
+        <div class="file-info">
+          <div class="file-name"></div>
+          <div class="file-detail"></div>
+        </div>
+        <div class="separator"></div>
+        <div class="upload-progress">
+          <div class="progress-percent">
+            0 %
+          </div>
+          <div class="progress">
+            <div class="progress-bar"></div>
+          </div>
+          <div class="process-tailen" style="text-align:center; font-size:11px; font-style : italic;">Đang tải lên...
+          </div>
+          <div class="process-xuly" style="text-align:center; font-size:11px; font-style : italic;" hidden="">Đang xử
+            lý, xin vui lòng chờ vài phút...
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

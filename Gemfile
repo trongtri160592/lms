@@ -54,6 +54,20 @@ gem 'devise'
 # Use to read excel file
 gem 'roo'
 
+# Use to convert document to html
+# Prerequisite: Install libreoffice or openoffice
+gem 'libreconv'
+
+# Use to unzip
+gem 'rubyzip'
+
+# Use for comments, votes and mention
+gem 'commontator'
+gem 'acts_as_votable'
+
+# Use for language support
+gem 'rails-i18n'
+
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem 'web-console', '>= 3.3.0'

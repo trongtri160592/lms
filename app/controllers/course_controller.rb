@@ -31,6 +31,7 @@ class CourseController < ApplicationController
 
   def detail
     @course = Course.find_by_id(params[:id])
+    @lessons = @course.lessons
   end
 
   private

@@ -1,0 +1,5 @@
+<% if @lesson.lesson_type.name == 'Scorm' %>
+    <iframe src="<%= @lesson.url %>" style="position: relative; height: 80vh; width: 100%; border: none"></iframe>
+<% end %>
+
+<%= commontator_thread(@lesson) %>

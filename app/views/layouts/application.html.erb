@@ -23,7 +23,7 @@
         <div class="row">
           <div class="brand">
             <a href="/">
-              <img src="/Content/Based/images/vicls-logo-wb.png">
+              <%= image_tag 'logo.png' %>
             </a>
           </div>
           <div class="user-action-group">
@@ -81,8 +81,10 @@
       </div>
     </header>
 <% end %>
-<div class="container">
-  <%= yield %>
+<div class="body-content">
+  <div class="container">
+    <%= yield %>
+  </div>
 </div>
 </div>
 </body>
