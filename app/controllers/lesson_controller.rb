@@ -54,7 +54,11 @@ class LessonController < ApplicationController
 
     # Validate Video
     if type.name == 'Video'
-
+		accepted_formats = [".mp4", ".webm"]
+		unless accepted_formats.include? File.extname("example.pdf")
+			flash[:danger] = 'Bài giảng không hợp lệ'
+			redirect_to lesson_new_path(type_id: params[:type_id], course_id: params[:course_id])
+		end
     end
 
     # Validate Âm thanh
