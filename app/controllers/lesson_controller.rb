@@ -3,7 +3,8 @@ require 'zip'
 class LessonController < ApplicationController
   before_action :authenticate_user!
 
-  def index; end
+  def index;
+  end
 
   def new
     @lesson = Lesson.new
@@ -14,9 +15,15 @@ class LessonController < ApplicationController
                                              course_id: params[:course_id], user_id: current_user.id))
     type = LessonType.find_by_id(params[:type_id])
 
+    if @lesson.errors.any?
+      render 'new' and return
+    end
+
+    @lesson.save
+
     # If type doesn't exist
     # Return 500 cause wrong parameter
-    render '500.html' unless type
+    render '500.html' and return unless type
 
     # Validate scorm
     if type.name == 'Scorm'
@@ -24,7 +31,8 @@ class LessonController < ApplicationController
         flash[:danger] = 'Bài giảng không hợp lệ'
         path_to_lesson = @lesson.file.file.path
         File.delete(path_to_lesson) if File.exist?(path_to_lesson)
-        return
+        @lesson.destroy
+        render 'new' and return
       end
       Zip::File.open(@lesson.file.file.path) do |zipfile|
         zipfile.each do |file|
@@ -40,11 +48,12 @@ class LessonController < ApplicationController
       unless File.exist?("public/bai-hoc/#{@lesson.id}/index.html")
         File.delete(@lesson.file.file.path) if File.exist?(@lesson.file.file.path)
         flash[:danger] = 'Bài giảng không hợp lệ'
+        @lesson.destroy
         return
       end
       @lesson.url = '/bai-hoc/' + @lesson.id.to_s + '/index.html'
-
-      redirect_to course_detail_path(id: params[:course_id]) if @lesson.save
+      @lesson.save
+      redirect_to course_detail_path(id: params[:course_id]) and return
     end
 
     # Validate Web
@@ -54,11 +63,16 @@ class LessonController < ApplicationController
 
     # Validate Video
     if type.name == 'Video'
-		accepted_formats = [".mp4", ".webm"]
-		unless accepted_formats.include? File.extname("example.pdf")
-			flash[:danger] = 'Bài giảng không hợp lệ'
-			redirect_to lesson_new_path(type_id: params[:type_id], course_id: params[:course_id])
-		end
+      accepted_formats = [".mp4", ".webm"]
+      unless accepted_formats.include? File.extname(@lesson.file.file.path)
+        flash[:danger] = 'Bài giảng không hợp lệ'
+        redirect_to lesson_new_path(type_id: params[:type_id], course_id: params[:course_id]) and return
+      end
+      unless @lesson.save
+        flash[:danger] = 'Khong the luu duoc tai lieu'
+        redirect_to lesson_new_path(type_id: params[:type_id], course_id: params[:course_id]) and return
+      end
+      redirect_to course_detail_path(id: params[:course_id]) and return
     end
 
     # Validate Âm thanh
@@ -80,11 +94,39 @@ class LessonController < ApplicationController
     if type.name == 'Bài kiểm tra'
 
     end
+
+    # Validate Tài liệu
+    if type.name == 'Tài liệu'
+      accepted_formats = [".doc", ".docx", ".ppt", ".pptx"]
+      unless accepted_formats.include? File.extname(@lesson.file.file.path)
+        flash[:danger] = 'Bài giảng không hợp lệ'
+        @lesson.destroy
+        redirect_to lesson_new_path(type_id: params[:type_id], course_id: params[:course_id]) and return
+      end
+      Dir.mkdir("public/bai-hoc/#{@lesson.id}")
+      Libreconv.convert(@lesson.file.file.path, "public/bai-hoc/#{@lesson.id}/index.html", nil, 'html')
+      unless File.exist?("public/bai-hoc/#{@lesson.id}/index.html")
+        File.delete(@lesson.file.file.path) if File.exist?(@lesson.file.file.path)
+        flash[:danger] = 'Bài giảng không hợp lệ'
+        @lesson.destroy
+        render 'new'
+        return
+      end
+      @lesson.url = '/bai-hoc/' + @lesson.id.to_s + '/index.html'
+      if @lesson.save
+        redirect_to course_detail_path(id: params[:course_id]) and return
+      else
+        flash[:danger] = 'Không thể luu bài giảng'
+        redirect_to lesson_new_path(type_id: params[:type_id], course_id: params[:course_id]) and return
+      end
+    end
   end
 
-  def edit; end
+  def edit;
+  end
 
-  def update; end
+  def update;
+  end
 
   def show
     @lesson = Lesson.find_by_id(params[:id])

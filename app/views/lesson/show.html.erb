@@ -1,4 +1,4 @@
-<% if @lesson.lesson_type.name == 'Scorm' %>
+<% if @lesson.lesson_type.name == 'Scorm' || @lesson.lesson_type.name == 'Tài liệu' %>
     <iframe src="<%= @lesson.url %>" style="position: relative; height: 80vh; width: 100%; border: none"></iframe>
 <% end %>
 

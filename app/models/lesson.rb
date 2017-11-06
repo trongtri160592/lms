@@ -5,4 +5,7 @@ class Lesson < ApplicationRecord
   belongs_to :course
   belongs_to :user
   belongs_to :lesson_type
+
+  validates :file, presence: true
+  validates :name, presence: true
 end
