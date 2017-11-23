@@ -6,9 +6,9 @@
     </a>
 
     <span class="vertical-separator">/</span>
-    <a href="/courses/index">Khoá học</a>
+	<%= link_to 'Khoá học', course_path %>
     <span class="vertical-separator">/</span>
-    <a href="/contents/index/5865">Nội dung</a>
+    <%= link_to 'Nội dung', course_detail_path(id: params[:course_id]) %>
     <span class="vertical-separator">/</span>
     <a class="no-event active" href="/Contents/AddContent/5865?CodeType=document">Thêm nội dung</a>
   </div>
