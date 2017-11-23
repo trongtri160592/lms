@@ -182,7 +182,7 @@ class LessonController < ApplicationController
   end
 
   def show
-    @lesson = Lesson.find_by_id(params[:id])
+    @lesson = Lesson.find(params[:id])
     commontator_thread_show(@lesson)
   end
 

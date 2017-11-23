@@ -31,7 +31,7 @@ Rails.application.routes.draw do
   get '/noi-dung/:id/sua', to: 'lesson#edit', as: 'lesson_edit'
   patch '/noi-dung/:id/sua', to: 'lesson#update', as: 'lesson_update'
 
-  get '/bai-hoc/:id', to: 'lesson#show', as: 'lesson_detail'
+  get '/noi-dung-bai-hoc/:id', to: 'lesson#show', as: 'lesson_detail'
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
