@@ -25,16 +25,16 @@ class LessonController < ApplicationController
     # Return 500 cause wrong parameter
     render '500.html' and return unless type
 
+	path_to_lesson = @lesson.file.file.path
     # Validate scorm
     if type.name == 'Scorm'
-      unless valid_zip?(@lesson.file.file.path)
+      unless valid_zip?(path_to_lesson)
         flash[:danger] = 'Bài giảng không hợp lệ'
-        path_to_lesson = @lesson.file.file.path
         File.delete(path_to_lesson) if File.exist?(path_to_lesson)
         @lesson.destroy
         render 'new' and return
       end
-      Zip::File.open(@lesson.file.file.path) do |zipfile|
+      Zip::File.open(path_to_lesson) do |zipfile|
         zipfile.each do |file|
           f_path = File.join("public/bai-hoc/#{@lesson.id}/" + file.name)
           FileUtils.mkdir_p(File.dirname(f_path))
@@ -46,11 +46,12 @@ class LessonController < ApplicationController
         File.rename("public/bai-hoc/#{@lesson.id}/index.htm", "public/bai-hoc/#{@lesson.id}/index.html")
       end
       unless File.exist?("public/bai-hoc/#{@lesson.id}/index.html")
-        File.delete(@lesson.file.file.path) if File.exist?(@lesson.file.file.path)
+        File.delete(path_to_lesson) if File.exist?(path_to_lesson)
         flash[:danger] = 'Bài giảng không hợp lệ'
         @lesson.destroy
         return
       end
+	  # Success
       @lesson.url = '/bai-hoc/' + @lesson.id.to_s + '/index.html'
       @lesson.save
       redirect_to course_detail_path(id: params[:course_id]) and return
@@ -58,55 +59,106 @@ class LessonController < ApplicationController
 
     # Validate Web
     if type.name == 'Web'
-
+	  accepted_formats = [".htm", ".html"]
+      unless accepted_formats.include? File.extname(path_to_lesson)
+        flash[:danger] = 'Web không hợp lệ'
+        redirect_to lesson_new_path(type_id: params[:type_id], course_id: params[:course_id]) and return
+      end
+      unless @lesson.save
+        flash[:danger] = 'Không thể lưu được web'
+        redirect_to lesson_new_path(type_id: params[:type_id], course_id: params[:course_id]) and return
+      end
+	  # Success
+	  @lesson.url = path_to_lesson
+	  @lesson.save
+      redirect_to course_detail_path(id: params[:course_id]) and return
     end
 
     # Validate Video
     if type.name == 'Video'
       accepted_formats = [".mp4", ".webm"]
-      unless accepted_formats.include? File.extname(@lesson.file.file.path)
-        flash[:danger] = 'Bài giảng không hợp lệ'
+      unless accepted_formats.include? File.extname(path_to_lesson)
+        flash[:danger] = 'Video không hợp lệ'
         redirect_to lesson_new_path(type_id: params[:type_id], course_id: params[:course_id]) and return
       end
       unless @lesson.save
-        flash[:danger] = 'Khong the luu duoc tai lieu'
+        flash[:danger] = 'Không thể lưu được video'
         redirect_to lesson_new_path(type_id: params[:type_id], course_id: params[:course_id]) and return
       end
+	  # Success
+	  @lesson.url = path_to_lesson
+	  @lesson.save
       redirect_to course_detail_path(id: params[:course_id]) and return
     end
 
     # Validate Âm thanh
     if type.name == 'Âm thanh'
-
+      accepted_formats = [".mp3"]
+      unless accepted_formats.include? File.extname(path_to_lesson)
+        flash[:danger] = 'Audio không hợp lệ'
+        redirect_to lesson_new_path(type_id: params[:type_id], course_id: params[:course_id]) and return
+      end
+      unless @lesson.save
+        flash[:danger] = 'Không thể lưu được audio'
+        redirect_to lesson_new_path(type_id: params[:type_id], course_id: params[:course_id]) and return
+      end
+	  # Success
+	  @lesson.url = path_to_lesson
+	  @lesson.save
+      redirect_to course_detail_path(id: params[:course_id]) and return	  
     end
 
     # Validate Hình ảnh
     if type.name == 'Hình ảnh'
-
+      accepted_formats = ["jpg", "jpeg", "gif", "png"]
+      unless accepted_formats.include? File.extname(path_to_lesson)
+        flash[:danger] = 'Hình ảnh không hợp lệ'
+        redirect_to lesson_new_path(type_id: params[:type_id], course_id: params[:course_id]) and return
+      end
+      unless @lesson.save
+        flash[:danger] = 'Không thể lưu được hình ảnh'
+        redirect_to lesson_new_path(type_id: params[:type_id], course_id: params[:course_id]) and return
+      end
+	  # Success
+	  @lesson.url = path_to_lesson
+	  @lesson.save	  
+      redirect_to course_detail_path(id: params[:course_id]) and return	  
     end
 
     # Validate Flash
     if type.name == 'Flash'
-
+      accepted_formats = ["swf"]
+      unless accepted_formats.include? File.extname(path_to_lesson)
+        flash[:danger] = 'Flash không hợp lệ'
+        redirect_to lesson_new_path(type_id: params[:type_id], course_id: params[:course_id]) and return
+      end
+      unless @lesson.save
+        flash[:danger] = 'Không thể lưu được flash'
+        redirect_to lesson_new_path(type_id: params[:type_id], course_id: params[:course_id]) and return
+      end
+	  # Success
+	  @lesson.url = path_to_lesson
+	  @lesson.save	  
+      redirect_to course_detail_path(id: params[:course_id]) and return	  
     end
 
     # Validate Bài kiểm tra
     if type.name == 'Bài kiểm tra'
-
+	  
     end
 
     # Validate Tài liệu
     if type.name == 'Tài liệu'
       accepted_formats = [".doc", ".docx", ".ppt", ".pptx"]
-      unless accepted_formats.include? File.extname(@lesson.file.file.path)
+      unless accepted_formats.include? File.extname(path_to_lesson)
         flash[:danger] = 'Bài giảng không hợp lệ'
         @lesson.destroy
         redirect_to lesson_new_path(type_id: params[:type_id], course_id: params[:course_id]) and return
       end
       Dir.mkdir("public/bai-hoc/#{@lesson.id}")
-      Libreconv.convert(@lesson.file.file.path, "public/bai-hoc/#{@lesson.id}/index.html", nil, 'html')
+      Libreconv.convert(path_to_lesson, "public/bai-hoc/#{@lesson.id}/index.html", nil, 'html')
       unless File.exist?("public/bai-hoc/#{@lesson.id}/index.html")
-        File.delete(@lesson.file.file.path) if File.exist?(@lesson.file.file.path)
+        File.delete(@lesson.file.file.path) if File.exist?(path_to_lesson)
         flash[:danger] = 'Bài giảng không hợp lệ'
         @lesson.destroy
         render 'new'
@@ -114,6 +166,7 @@ class LessonController < ApplicationController
       end
       @lesson.url = '/bai-hoc/' + @lesson.id.to_s + '/index.html'
       if @lesson.save
+		# Success
         redirect_to course_detail_path(id: params[:course_id]) and return
       else
         flash[:danger] = 'Không thể luu bài giảng'
